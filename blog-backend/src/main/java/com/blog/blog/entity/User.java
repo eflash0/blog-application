@@ -1,13 +1,16 @@
 package com.blog.blog.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import io.micrometer.common.lang.NonNull;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -15,6 +18,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import lombok.EqualsAndHashCode;
@@ -29,18 +33,20 @@ import lombok.Setter;
 public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long userId;
+    private Long userId;
     @NonNull
     @Column(unique = true)
-    String username;
+    private String username;
     @NonNull
     @Column(unique = true)
     @Email(message = "invalid email")
-    String email;
+    private String email;
     @NonNull
-    String password;
+    private String password;
     @Enumerated(EnumType.STRING)
-    Role role;
+    private Role role;
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,orphanRemoval = true)
+    List<Post> posts = new ArrayList<>();
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;

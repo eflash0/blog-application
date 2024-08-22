@@ -1,0 +1,23 @@
+spring:
+    application:
+        name: blog
+    datasource:
+        url: jdbc:postgresql://localhost:5432/blog
+        username: abdo
+        password: 123 
+        dirver-class-name: org.postgresql.Driver  
+    jpa:
+        hibernate: 
+            ddl-auto: create-drop
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+        show-sql: true
+        properties: 
+            hibernate:          
+                format_sql: true
+server:
+    port: 8082
+    error:
+        include-message: always
+jwt:
+    secret: 2+LaR6mKTpaFTMK4NKlHUQ5JgMtQFK0zGGSE/OUgJR8oU7Vhihb0gA8RofYlZZ/30kN+My5iIvuvYPDDMld5hg==
+    expiration: 36000                        
