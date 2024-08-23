@@ -1,5 +1,6 @@
 package com.blog.blog.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
+import com.blog.blog.dto.CommentDto;
 import com.blog.blog.dto.PostDto;
 import com.blog.blog.entity.Category;
 import com.blog.blog.entity.Post;
@@ -56,5 +58,17 @@ public class PostSevice {
         }
         Post updatedPost = postRepository.save(existingPost);
         return modelMapper.map(updatedPost,PostDto.class);
+    }
+
+    public void deletePost(Long postId){
+        postRepository.deleteById(postId);
+    }
+
+    public List<CommentDto> getPostComments(Long postId){
+        Post post = postRepository.findById(postId).orElseThrow(() ->
+        new IllegalArgumentException("post not found"));
+        List<CommentDto> comments = post.getComments().stream().map(comment -> 
+        modelMapper.map(comment,CommentDto.class)).toList();
+        return comments;
     }
 }
