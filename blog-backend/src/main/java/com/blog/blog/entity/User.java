@@ -28,7 +28,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-@Table
+@Table(name = "users")
 @Entity
 public class User implements UserDetails{
     @Id

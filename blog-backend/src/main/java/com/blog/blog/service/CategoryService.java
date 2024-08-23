@@ -1,11 +1,13 @@
 package com.blog.blog.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.blog.blog.entity.Category;
+import com.blog.blog.entity.Post;
 import com.blog.blog.repository.CategoryRepository;
 
 @Service
@@ -44,4 +46,12 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
+    public List<Category> getAllCategories(){
+        return categoryRepository.findAll();
+    }
+    
+    public List<Post> getPostsByCategory(Long categoryId){
+        return categoryRepository.findById(categoryId).orElseThrow(() ->
+        new IllegalArgumentException("category not found")).getPosts();
+    }
 }

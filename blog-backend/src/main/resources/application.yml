@@ -3,9 +3,9 @@ spring:
         name: blog
     datasource:
         url: jdbc:postgresql://localhost:5432/blog
-        username: abdo
+        username: postgres
         password: 123 
-        dirver-class-name: org.postgresql.Driver  
+        driver-class-name: org.postgresql.Driver  
     jpa:
         hibernate: 
             ddl-auto: create-drop
