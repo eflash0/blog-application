@@ -37,7 +37,6 @@ public class AdminService {
         user.setRole(Role.ADMIN);
         user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         User savedUser = userRepository.save(user);
-        System.out.println(user.getRole());
         return modelMapper.map(savedUser,UserDto.class);
     }
 
@@ -45,6 +44,11 @@ public class AdminService {
         List<User> admins = userRepository.getUsersByRole(Role.ADMIN);
         return admins.stream().map(admin -> modelMapper
         .map(admin,UserDto.class)).toList();
+    }
+
+    public List<UserDto> getUsers(){
+        List<User> users = userRepository.getUsersByRole(Role.USER);
+        return users.stream().map(user -> modelMapper.map(user,UserDto.class)).toList();
     }
 
     public UserDto updateUser(UserDto userDto,Long id){

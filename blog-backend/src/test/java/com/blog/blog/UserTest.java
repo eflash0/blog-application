@@ -67,7 +67,7 @@ public class UserTest {
         assertNotNull(rslt);
         assertEquals(rslt.getUsername(),userDto.getUsername());
         assertEquals(rslt.getEmail(),userDto.getEmail());
-        // assertEquals(Role.ADMIN,rslt.getRole());
+        assertEquals(Role.ADMIN,rslt.getRole());
     }
 
     @Test

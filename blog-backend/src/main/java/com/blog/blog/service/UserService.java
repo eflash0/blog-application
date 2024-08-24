@@ -51,11 +51,6 @@ public class UserService implements UserDetailsService{
         return modelMapper.map(savedUser,UserDto.class);
     }
 
-    public List<UserDto> getUsers(){
-        List<User> users = userRepository.getUsersByRole(Role.USER);
-        return users.stream().map(user -> modelMapper.map(user,UserDto.class)).toList();
-    }
-
     public List<PostDto> getUserPosts(Long id){
         User existingUser = userRepository.findById(id).orElseThrow(() ->
         new IllegalArgumentException("user not found"));
