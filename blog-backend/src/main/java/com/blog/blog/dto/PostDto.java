@@ -15,10 +15,11 @@ import lombok.Setter;
 public class PostDto {
     private Long postId;
     private String title;
+    private String imagePath;
     private String content;
     private Long authorId;
     private List<CommentDto> comments;
-    private String categoryName;
+    private List<CategoryDto> categories;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

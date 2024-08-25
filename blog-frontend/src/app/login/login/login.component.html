@@ -9,18 +9,18 @@
 
   <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
     <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
-    <form class="space-y-4">
-      <input type="email" placeholder="Email" class="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500">
-      <input type="password" placeholder="Password" class="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500">
+    <form (ngSubmit)="login()" class="space-y-4">
+      <input [(ngModel)]="loginRequest.username" name="username" type="username" placeholder="Username" class="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500">
+      <input [(ngModel)]="loginRequest.password" name="password" type="password" placeholder="Password" class="w-full p-3 border rounded-lg focus:outline-none focus:border-blue-500">
       <div class="flex items-center justify-between">
         <label class="flex items-center text-gray-600">
-          <input type="checkbox" class="mr-2"> Remember me
+          <input [(ngModel)]="rememberMe" name="rememberMe" type="checkbox" class="mr-2"> Remember me
         </label>
         <a href="#" class="text-blue-600 hover:underline">Forgot password?</a>
       </div>
       <button class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700">Login</button>
     </form>
-    <p class="text-center text-gray-600 mt-4">Don't have an account? <a href="/signup" class="text-blue-600 hover:underline">Sign Up</a></p>
+    <p class="text-center text-gray-600 mt-4 cursor-pointer">Don't have an account? <a (click)="goSignup()" class="text-blue-600 hover:underline">Sign Up</a></p>
   </div>
 
 </body>

@@ -56,11 +56,11 @@ public class PostSevice {
         if(postDto.getTitle()!=null && postDto.getTitle().isEmpty()){
             existingPost.setTitle(postDto.getTitle());
         }
-        if(postDto.getCategoryName()!=null && !postDto.getCategoryName().isEmpty()){
-            Category category = categoryRepository.findByName(postDto.getCategoryName()).orElseThrow(
-            () -> new IllegalArgumentException("category not found"));
-            existingPost.setCategory(category);
-        }
+        // if(postDto.getCategoryName()!=null && !postDto.getCategoryName().isEmpty()){
+        //     Category category = categoryRepository.findByName(postDto.getCategoryName()).orElseThrow(
+        //     () -> new IllegalArgumentException("category not found"));
+        //     existingPost.setCategory(category);
+        // }
         Post updatedPost = postRepository.save(existingPost);
         return modelMapper.map(updatedPost,PostDto.class);
     }
@@ -78,7 +78,7 @@ public class PostSevice {
     }
 
     public List<PostDto> findPostsByCategory(String categoryName){
-        List<Post> posts = postRepository.findPostsByCategory(categoryName);
+        List<Post> posts = postRepository.findByCategories_Name(categoryName);
         return posts.stream().map(post -> modelMapper.map(post,PostDto.class)).toList();
     }
 }

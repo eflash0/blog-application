@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.blog.blog.dto.PostDto;
+import com.blog.blog.dto.SignupRequest;
 import com.blog.blog.dto.UserDto;
 import com.blog.blog.entity.Post;
 import com.blog.blog.entity.Role;
@@ -35,16 +36,22 @@ public class UserService implements UserDetailsService{
         new UsernameNotFoundException("user not found"));
     }
 
-    public UserDto signup(UserDto userDto){
-        Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
+    public UserDto signup(SignupRequest signupRequest){
+        Optional<User> existingUser = userRepository.findByUsername(signupRequest.getUsername());
         if(existingUser.isPresent()){
             throw new IllegalArgumentException("the username already exists");
         }
-        existingUser = userRepository.findByEmail(userDto.getEmail());
+        existingUser = userRepository.findByEmail(signupRequest.getEmail());
         if(existingUser.isPresent()){
             throw new IllegalArgumentException("the email already exists");
         }
-        User user = modelMapper.map(userDto,User.class);
+        if(!signupRequest.getPassword().equals(signupRequest.getConfirmPassword())){
+            throw new IllegalArgumentException("the password and the confirm password must be equals");
+        }
+        User user = new User();
+        user.setUsername(signupRequest.getUsername());
+        user.setPassword(signupRequest.getPassword());
+        user.setEmail(signupRequest.getEmail());
         user.setRole(Role.USER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);

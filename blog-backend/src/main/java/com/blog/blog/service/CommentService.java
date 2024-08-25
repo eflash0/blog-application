@@ -20,6 +20,11 @@ public class CommentService {
     @Autowired
     private ModelMapper modelMapper;
 
+    public List<CommentDto> getAllComments(){
+        List<Comment> comments = commentRepository.findAll();
+        return comments.stream().map(comment -> modelMapper.map(comment,CommentDto.class)).toList();
+    }
+
     public CommentDto findCommentById(Long commentId){
         Comment comment = commentRepository.findById(commentId).orElseThrow(() ->
         new IllegalArgumentException("comment not found"));
