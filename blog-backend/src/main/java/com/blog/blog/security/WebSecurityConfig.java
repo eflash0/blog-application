@@ -27,7 +27,7 @@ public class WebSecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("login","singnup").permitAll()
+                .requestMatchers("/auth/**").permitAll()
                 .anyRequest().permitAll()
             )
             .sessionManagement(session -> session

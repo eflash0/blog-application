@@ -44,7 +44,7 @@ public class UserService implements UserDetailsService{
         if(existingUser.isPresent()){
             throw new IllegalArgumentException("the email already exists");
         }
-        User user = modelMapper.map(existingUser,User.class);
+        User user = modelMapper.map(userDto,User.class);
         user.setRole(Role.USER);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);

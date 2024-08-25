@@ -32,6 +32,11 @@ public class PostSevice {
         return modelMapper.map(post,PostDto.class);
     }
 
+    public List<PostDto> getPosts(){
+        List<Post> posts = postRepository.findAll();
+        return posts.stream().map(post -> modelMapper.map(post,PostDto.class)).toList();
+    }
+
     public PostDto addPost(PostDto postDto){
         Optional<Post> existingPost = postRepository.findById(postDto.getPostId());
         if(existingPost.isPresent()){
@@ -70,5 +75,10 @@ public class PostSevice {
         List<CommentDto> comments = post.getComments().stream().map(comment -> 
         modelMapper.map(comment,CommentDto.class)).toList();
         return comments;
+    }
+
+    public List<PostDto> findPostsByCategory(String categoryName){
+        List<Post> posts = postRepository.findPostsByCategory(categoryName);
+        return posts.stream().map(post -> modelMapper.map(post,PostDto.class)).toList();
     }
 }
