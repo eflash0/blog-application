@@ -1,1 +1,43 @@
-<p>create-post works!</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add New Post</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="font-sans bg-pastel-cyan">
+
+  <ng-container>
+    <app-navigation-bar></app-navigation-bar>
+  </ng-container>
+
+  <main class="container mx-auto py-8 px-6 md:px-8 lg:px-10">
+    <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-md">
+      <h1 class="text-3xl font-bold mb-4">Add New Post</h1>
+      <form>
+        <div class="mb-4">
+          <label for="title" class="block text-gray-700 font-medium mb-2">Title</label>
+          <input type="text" id="title" name="title" placeholder="Enter post title" class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-pastel-rose focus:border-transparent">
+        </div>
+        <div class="mb-4">
+          <label for="content" class="block text-gray-700 font-medium mb-2">Content</label>
+          <textarea id="content" name="content" placeholder="Enter post content" rows="6" class="w-full border border-gray-300 rounded-lg py-2 px-3 focus:outline-none focus:ring-2 focus:ring-pastel-rose focus:border-transparent"></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="image" class="block text-gray-700 font-medium mb-2">Image</label>
+          <input type="file" id="image" name="image" class="w-full border border-gray-300 rounded-lg py-2 px-3 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-pastel-rose focus:border-transparent">
+        </div>
+        <button type="submit" class="bg-pastel-rose text-white py-2 px-4 rounded-lg hover-rose focus:outline-none focus:ring-2 focus:ring-pastel-rose focus:ring-opacity-50">
+          Add Post
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <ng-container>
+    <app-footer></app-footer>
+  </ng-container>
+
+</body>
+</html>

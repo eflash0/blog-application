@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import com.blog.blog.dto.CommentDto;
 import com.blog.blog.dto.PostDto;
@@ -16,7 +15,7 @@ import com.blog.blog.repository.CategoryRepository;
 import com.blog.blog.repository.PostRepository;
 
 @Service
-public class PostSevice {
+public class PostService {
     @Autowired
     PostRepository postRepository;
 

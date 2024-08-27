@@ -16,54 +16,54 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.blog.blog.dto.CommentDto;
 import com.blog.blog.dto.PostDto;
-import com.blog.blog.service.PostSevice;
+import com.blog.blog.service.PostService;
 
 @RestController
 @RequestMapping(path = "/posts")
 public class PostController {
 
     @Autowired
-    private PostSevice postSevice;
+    private PostService postService;
 
     @GetMapping("/{id}")
     public ResponseEntity<PostDto> getPost(@PathVariable Long id){
-        PostDto post = postSevice.findPostById(id);
+        PostDto post = postService.findPostById(id);
         return ResponseEntity.ok(post);
     }
 
     @GetMapping
     public ResponseEntity<List<PostDto>> getAllPosts(){
-        List<PostDto> posts = postSevice.getPosts();
+        List<PostDto> posts = postService.getPosts();
         return ResponseEntity.ok(posts);
     }
 
     @GetMapping("/{id}/comments")
     public ResponseEntity<List<CommentDto>> getPostComments(@PathVariable Long id){
-        List<CommentDto> comments = postSevice.getPostComments(id);
+        List<CommentDto> comments = postService.getPostComments(id);
         return ResponseEntity.ok(comments);
     }
 
     @PostMapping
     public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
-        PostDto post = postSevice.addPost(postDto);
+        PostDto post = postService.addPost(postDto);
         return ResponseEntity.ok(post);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,@PathVariable Long id){
-        PostDto post = postSevice.updatePost(postDto, id);
+        PostDto post = postService.updatePost(postDto, id);
         return ResponseEntity.ok(post);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePost(@PathVariable Long id){
-        postSevice.deletePost(id);
+        postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/byCategory")
     public ResponseEntity<List<PostDto>> getPostsByCategory(@RequestParam("category") String category){
-        List<PostDto> posts = postSevice.findPostsByCategory(category);
+        List<PostDto> posts = postService.findPostsByCategory(category);
         return ResponseEntity.ok(posts);
     }
 
