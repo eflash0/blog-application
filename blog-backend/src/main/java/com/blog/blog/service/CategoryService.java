@@ -27,7 +27,7 @@ public class CategoryService {
     }
 
     public Category addCategory(Category category){
-        Optional<Category> existCategory = categoryRepository.findById(category.getCategoryId());
+        Optional<Category> existCategory = categoryRepository.findByName(category.getName());
         if(existCategory.isPresent()){
             throw new IllegalArgumentException("the category already exists");
         }

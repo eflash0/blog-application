@@ -31,7 +31,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-@Table
+@Table(name = "posts")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -54,7 +54,7 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JoinTable(name = "post_category",
         joinColumns = @JoinColumn(name = "post_id"),
         inverseJoinColumns = @JoinColumn(name = "category_id"),

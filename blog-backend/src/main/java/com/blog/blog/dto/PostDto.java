@@ -3,6 +3,8 @@ package com.blog.blog.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.blog.blog.entity.Category;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

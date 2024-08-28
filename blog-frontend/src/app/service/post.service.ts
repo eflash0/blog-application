@@ -16,7 +16,7 @@ export class PostService {
 
   addPost(post : any) : Observable<any>{
     const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
-    return this.http.post<any>(post,{ headers })
+    return this.http.post<any>(this.url,post,{ headers })
   }
 
   updatePost(post : any,id : number) : Observable<any>{

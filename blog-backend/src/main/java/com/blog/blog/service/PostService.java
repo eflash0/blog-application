@@ -11,8 +11,12 @@ import com.blog.blog.dto.CommentDto;
 import com.blog.blog.dto.PostDto;
 import com.blog.blog.entity.Category;
 import com.blog.blog.entity.Post;
+import com.blog.blog.entity.User;
 import com.blog.blog.repository.CategoryRepository;
 import com.blog.blog.repository.PostRepository;
+import com.blog.blog.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class PostService {
@@ -21,6 +25,9 @@ public class PostService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired 
+    private UserRepository userRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -36,12 +43,20 @@ public class PostService {
         return posts.stream().map(post -> modelMapper.map(post,PostDto.class)).toList();
     }
 
+    @Transactional
     public PostDto addPost(PostDto postDto){
-        Optional<Post> existingPost = postRepository.findById(postDto.getPostId());
-        if(existingPost.isPresent()){
-            throw new IllegalArgumentException("the post already exists");
+        Optional<User> authorPost = userRepository.findById(postDto.getAuthorId());
+        if(!authorPost.isPresent()){
+            throw new IllegalArgumentException("the user doesnt exist");
         }
         Post post = modelMapper.map(postDto,Post.class);
+        List<Category> categories = postDto.getCategories().stream()
+        .map(categoryDto -> {
+            Category category = modelMapper.map(categoryDto, Category.class);
+            return categoryRepository.save(category); 
+        })
+        .toList();
+        post.setCategories(categories);
         Post savedPost = postRepository.save(post);
         return modelMapper.map(savedPost,PostDto.class);
     }

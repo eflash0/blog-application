@@ -63,4 +63,10 @@ public class CommentController {
         List<CommentDto> replies = commentService.getCommentReplies(id);
         return ResponseEntity.ok(replies);
     }
+
+    @PostMapping("/reply")
+    public ResponseEntity<CommentDto> addReply(@RequestBody CommentDto reply){
+        CommentDto parentCommentDto = commentService.addReply(reply);
+        return ResponseEntity.ok(parentCommentDto);
+    }
 }

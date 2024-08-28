@@ -9,15 +9,15 @@ export class Post {
     authorId: number;
     comments?: Comment[];
     categories?: Category[];
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 
     constructor(
         title: string,
         content: string,
         authorId: number,
-        createdAt: Date,
-        updatedAt: Date,
+        createdAt?: Date,
+        updatedAt?: Date,
         postId?: number,
         imagePath?: string,
         comments?: Comment[],

@@ -14,7 +14,6 @@ import lombok.Setter;
 public class CommentDto {
     private Long commentId;
     private String content;
-    Long postId;
-    Long parentCommentId;
-    List<CommentDto> replies;
+    private Long postId;
+    private Long parentCommentId;
 }

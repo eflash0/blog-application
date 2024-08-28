@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.blog.blog.dto.CommentDto;
 import com.blog.blog.entity.Comment;
+import com.blog.blog.entity.Post;
 import com.blog.blog.repository.CommentRepository;
+import com.blog.blog.repository.PostRepository;
 
 @Service
 public class CommentService {
@@ -19,6 +21,9 @@ public class CommentService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private PostRepository postRepository;
 
     public List<CommentDto> getAllComments(){
         List<Comment> comments = commentRepository.findAll();
@@ -32,11 +37,15 @@ public class CommentService {
     }
 
     public CommentDto addComment(CommentDto commentDto){
-        Optional<Comment> existingComment = commentRepository.findById(commentDto.getCommentId());
-        if(existingComment.isPresent()){
-            throw new IllegalArgumentException("the comment already exists");
+        Optional<Post> existingPost = postRepository.findById(commentDto.getPostId());
+        if(!existingPost.isPresent()){
+            throw new IllegalArgumentException("the post doesnt exist");
         }
         Comment comment = modelMapper.map(commentDto, Comment.class);
+        if(existingPost.get().getComments().contains(comment)){
+             throw new IllegalArgumentException("comment already exists");
+        }
+        existingPost.get().getComments().add(comment);
         Comment savedComment = commentRepository.save(comment);
         return modelMapper.map(savedComment,CommentDto.class);
     }
@@ -61,6 +70,20 @@ public class CommentService {
         return comment.getReplies().stream()
         .map(reply -> modelMapper.map(reply,CommentDto.class))
         .collect(Collectors.toList());
+    }
+
+    public CommentDto addReply(CommentDto replyDto){
+        Optional<Comment> commentOpt = commentRepository.findById(replyDto.getParentCommentId());
+        if(!commentOpt.isPresent()){
+            throw new IllegalArgumentException("comment parent doesnt found");
+        }
+        Comment parentComment = commentOpt.get();
+        Comment reply = modelMapper.map(replyDto,Comment.class);
+        if(!parentComment.getReplies().contains(reply)){
+            parentComment.getReplies().add(reply);
+        }
+        Comment savedComment = commentRepository.save(parentComment);
+        return modelMapper.map(savedComment,CommentDto.class);
     }
 
 }

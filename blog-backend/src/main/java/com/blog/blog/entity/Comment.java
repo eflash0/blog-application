@@ -22,7 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode
-@Table
+@Table(name = "comments")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
