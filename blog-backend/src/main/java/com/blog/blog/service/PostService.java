@@ -1,5 +1,7 @@
 package com.blog.blog.service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +52,7 @@ public class PostService {
             throw new IllegalArgumentException("the user doesnt exist");
         }
         Post post = modelMapper.map(postDto,Post.class);
-        List<Category> categories = postDto.getCategories().stream()
+        List<Category> categories = postDto.getCategories()==null?Collections.emptyList():post.getCategories().stream()
         .map(categoryDto -> {
             Category category = modelMapper.map(categoryDto, Category.class);
             return categoryRepository.save(category); 

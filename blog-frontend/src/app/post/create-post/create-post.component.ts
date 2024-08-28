@@ -13,11 +13,13 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './create-post.component.css'
 })
 export class CreatePostComponent {
-  post = new Post('','',0);
+  post = new Post('','',1);
   constructor(private postService : PostService) {}
 
   create() : void{
-    this.post.authorId = Number(localStorage.getItem('userId'));
+    // this.post.authorId = Number(localStorage.getItem('userId'));
+    console.log(this.post);
+    
     this.postService.addPost(this.post).subscribe(
       response => {
         console.log('post added with success',response);

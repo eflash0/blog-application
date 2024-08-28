@@ -22,6 +22,4 @@ public class PostDto {
     private Long authorId;
     private List<CommentDto> comments;
     private List<CategoryDto> categories;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }
