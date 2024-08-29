@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.blog.blog.dto.PostDto;
+import com.blog.blog.dto.UserDto;
 import com.blog.blog.service.UserService;
 
 @RestController
@@ -19,10 +20,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping("/{id}/posts")
+    @GetMapping("/{id}/posts")
     public ResponseEntity<List<PostDto>> getUserPosts(@PathVariable Long id){
         List<PostDto> posts = userService.getUserPosts(id);
         return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
+        UserDto user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
 }

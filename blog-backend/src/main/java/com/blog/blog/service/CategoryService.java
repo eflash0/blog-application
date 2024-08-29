@@ -3,9 +3,11 @@ package com.blog.blog.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.blog.blog.dto.CategoryDto;
 import com.blog.blog.entity.Category;
 import com.blog.blog.entity.Post;
 import com.blog.blog.repository.CategoryRepository;
@@ -14,6 +16,9 @@ import com.blog.blog.repository.CategoryRepository;
 public class CategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     public Category findCategoryById(Long id){
         return categoryRepository.findById(id).orElseThrow(() ->
@@ -46,8 +51,10 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    public List<Category> getAllCategories(){
-        return categoryRepository.findAll();
+    public List<CategoryDto> getAllCategories(){
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream().map(category -> modelMapper
+        .map(category,CategoryDto.class)).toList(); 
     }
     
     public List<Post> getPostsByCategory(Long categoryId){

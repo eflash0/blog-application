@@ -1,9 +1,17 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
+  private url = "http://localhost:8082/users"
+  constructor(private http : HttpClient) { }
 
-  constructor() { }
+  findUserById(id : number) : Observable<any>{
+    const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
+    const user = `${this.url}/${id}`;
+    return this.http.get<any>(user,{ headers });
+  }
 }

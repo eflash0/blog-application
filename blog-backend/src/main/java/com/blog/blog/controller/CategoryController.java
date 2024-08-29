@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blog.blog.dto.CategoryDto;
 import com.blog.blog.entity.Category;
 import com.blog.blog.entity.Post;
 import com.blog.blog.service.CategoryService;
@@ -24,8 +25,8 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<Category>> getCategories(){
-        List<Category> categories = categoryService.getAllCategories();
+    public ResponseEntity<List<CategoryDto>> getCategories(){
+        List<CategoryDto> categories = categoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 

@@ -31,27 +31,10 @@
         <div class="mb-4">
           <label for="categories" class="block text-gray-700 font-medium mb-2">Categories</label>
           <div class="grid grid-cols-2 gap-4">
-            <label class="inline-flex items-center">
-              <input type="checkbox" name="categories" class="form-checkbox h-5 w-5 text-pastel-rose">
-              <span class="ml-2 text-gray-700">Technology</span>
+            <label *ngFor="let category of categories" class="inline-flex items-center">
+              <input type="checkbox" [(ngModel)]="category.selected" name="categories" class="form-checkbox h-5 w-5 text-pastel-rose">
+              <span class="ml-2 text-gray-700">{{category.name}}</span>
             </label>
-            <label class="inline-flex items-center">
-              <input type="checkbox" name="categories" class="form-checkbox h-5 w-5 text-pastel-rose">
-              <span class="ml-2 text-gray-700">Fiction</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input type="checkbox" name="categories" class="form-checkbox h-5 w-5 text-pastel-rose">
-              <span class="ml-2 text-gray-700">Animals</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input type="checkbox" name="categories" class="form-checkbox h-5 w-5 text-pastel-rose">
-              <span class="ml-2 text-gray-700">Movies</span>
-            </label>
-            <label class="inline-flex items-center">
-              <input type="checkbox" name="categories" class="form-checkbox h-5 w-5 text-pastel-rose">
-              <span class="ml-2 text-gray-700">Movies</span>
-            </label>
-            
           </div>
         </div>
         
