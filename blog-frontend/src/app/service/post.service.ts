@@ -14,6 +14,12 @@ export class PostService {
     return this.http.get<any>(this.url,{ headers });
   } 
 
+  getPostById(id : number) : Observable<any>{
+    const postUrl = `${this.url}/${id}`;
+    const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
+    return this.http.get<any>(postUrl,{ headers });
+  }
+
   addPost(post : any) : Observable<any>{
     const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
     return this.http.post<any>(this.url,post,{ headers })

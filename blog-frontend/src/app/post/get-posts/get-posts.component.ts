@@ -6,6 +6,7 @@ import { NavigationBarComponent } from "../../navigation-bar/navigation-bar.comp
 import { FooterComponent } from "../../footer/footer.component";
 import { PostService } from '../../service/post.service';
 import { UserService } from '../../service/user.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-get-posts',
   standalone: true,
@@ -14,22 +15,67 @@ import { UserService } from '../../service/user.service';
   styleUrl: './get-posts.component.css'
 })
 export class GetPostsComponent implements OnInit {
-  post : any;
-  constructor(private postService : PostService,private userService : UserService) {}
+  posts : any[] = [];
+  paginatedPosts : any[] = [];
+  postsNumbers : number = 0;
+  postsPerPage : number = 6;
+  currentPage : number = 1;
+Math: any;
+  constructor(private postService : PostService,private userService : UserService,private router:Router) {}
+  
   ngOnInit(): void {
       this.postService.getPosts().subscribe(
-        response => {this.post = response;},
-        error => {console.error('error fetching posts',error);
-        }
+        response => {this.posts = response.map((post:any) => ({
+            ...post,
+            createdAt: new Date(
+              post.createdAt[0],  
+              post.createdAt[1] - 1,  
+              post.createdAt[2], 
+              post.createdAt[3],  
+              post.createdAt[4],
+              post.createdAt[5],
+              post.createdAt[6] / 1000000
+            )
+          }));
+          this.updatePaginatedPosts();
+        },
+        error => {console.error('error fetching posts',error);}
       );
   }
-  getAuthorName(id : number) : any{
-    this.userService.findUserById(id).subscribe(
-      response => {return response.username;},
-      error => {
-        console.error('error fetching user',error);
-        return null;
-      }
-    );
+
+  updatePaginatedPosts():void{
+    const startIndex = (this.currentPage-1)*this.postsPerPage;
+    const endIndex = startIndex + this.postsPerPage;
+    console.log(this.posts.length);
+    this.paginatedPosts = this.posts.slice(startIndex,endIndex);
   }
+
+  changePage(page : number):void{
+    this.currentPage = page;
+    this.updatePaginatedPosts();
+  }
+
+  nextPage():void{
+    if((this.posts.length/6)>this.currentPage){
+      this.currentPage++;
+      this.updatePaginatedPosts();
+    }   
+  }
+
+  previousPage():void{
+    if(this.currentPage>1){
+      this.currentPage--;
+      this.updatePaginatedPosts();
+    }
+  }
+
+  getTotalPages(): number[] {
+    const totalPages = Math.ceil(this.posts.length / this.postsPerPage);
+    return Array(totalPages).fill(0).map((x, i) => i + 1);
+  }
+
+  postDetails(id:number){
+    this.router.navigate(['/postDetails',id]);
+  }
+
 }

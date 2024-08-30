@@ -12,5 +12,6 @@ export const routes: Routes = [
     {path : 'get-posts', component : GetPostsComponent},
     {path : 'navigation-bar', component : NavigationBarComponent},
     {path : 'post-details', component : PostDetailComponent},
-    {path : 'create-post', component : CreatePostComponent}
+    {path : 'create-post', component : CreatePostComponent},
+    {path : 'postDeatails/:id', component : CreatePostComponent}
 ];

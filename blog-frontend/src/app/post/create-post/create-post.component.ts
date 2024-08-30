@@ -6,6 +6,9 @@ import { PostService } from '../../service/post.service';
 import { FormsModule } from '@angular/forms';
 import { CategoryService } from '../../service/category.service';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../service/user.service';
+import { User } from '../../model/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-post',
@@ -15,9 +18,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './create-post.component.css'
 })
 export class CreatePostComponent implements OnInit {
-  post = new Post('','',1);
+  post = new Post('','');
   categories : any;
-  constructor(private postService : PostService,private categoryService : CategoryService) {}
+  id : number = 1; 
+  user : any;
+  constructor(private postService : PostService,private categoryService : CategoryService,
+    private userService : UserService , private router : Router
+  ) {}
 
   ngOnInit(): void {
       this.categoryService.getCategories().subscribe(
@@ -30,15 +37,24 @@ export class CreatePostComponent implements OnInit {
   }
 
   create() : void{
-    const selectedCategories = this.categories.filter((category:any) => category.selected);
-    // this.post.authorId = Number(localStorage.getItem('userId'));
-    console.log(this.post);
-    this.post.categories = selectedCategories.map((category: any) => ({categoryId : category.categoryId,name : category.name}));
-    this.postService.addPost(this.post).subscribe(
+    this.userService.findUserById(this.id).subscribe(
       response => {
-        console.log('post added with success',response);
+        this.user = response;
+        this.post.author = this.user;
+        const selectedCategories = this.categories.filter((category:any) => category.selected);
+        // this.post.authorId = Number(localStorage.getItem('userId'));
+        console.log(this.post);
+        this.post.categories = selectedCategories.map((category: any) => ({categoryId : category.categoryId,name : category.name}));
+        this.postService.addPost(this.post).subscribe(
+          response => {
+            console.log('post added with success',response);
+            this.router.navigate(['/get-posts']);
+          },
+          error => {console.error('error adding post',error);}
+        );
       },
-      error => {console.error('error adding post',error);}
+      error => {console.error('error fetching user',error);
+      }
     );
   }
 }

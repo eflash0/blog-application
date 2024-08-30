@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.blog.blog.entity.Category;
+import com.blog.blog.entity.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,9 @@ public class PostDto {
     private String title;
     private String imagePath;
     private String content;
-    private Long authorId;
+    private UserDto author;
     private List<CommentDto> comments;
     private List<CategoryDto> categories;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

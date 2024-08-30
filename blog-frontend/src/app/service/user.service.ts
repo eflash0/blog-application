@@ -11,7 +11,7 @@ export class UserService {
 
   findUserById(id : number) : Observable<any>{
     const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
-    const user = `${this.url}/${id}`;
+    const user = `${this.url}/1`;
     return this.http.get<any>(user,{ headers });
   }
 }

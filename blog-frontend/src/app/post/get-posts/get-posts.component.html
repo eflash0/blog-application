@@ -7,62 +7,22 @@
     </aside>
     <main class="w-3/4 bg-white py-8 px-4">
       <div class="container mx-auto">
+       <ng-container *ngIf="posts.length>0;else noPostFound">
         <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          <div class="bg-white text-gray-800 rounded-lg overflow-hidden shadow-md">
+          <div *ngFor="let post of paginatedPosts" class="bg-white text-gray-800 rounded-lg overflow-hidden shadow-md">
             <a class="block">
               <img [src]="post.imagePath" alt="Blog post image" class="w-full h-48 object-cover transition-opacity hover:opacity-80" />
             </a>
             <div class="p-4">
               <div class="flex justify-between mb-2">
-                <a class="text-blue-600 text-sm">{{getAuthorName(post.authorId)}}</a>
-                <time datetime="2024-08-27" class="text-gray-600 text-sm">August 27, 2024</time>
+                <a class="text-blue-600 text-sm">{{post.author.username}}</a>
+                <time [attr.datetime]="post.createdAt | date:'yyyy-MM-ddTHH:mm:ss'" class="text-gray-600 text-sm">
+                  {{ post.createdAt | date:'MMMM d, yyyy' }}
+                </time>
               </div>
               <a class="block text-xl font-bold mb-2 text-gray-800 cursor-pointer">{{post.title}}</a>
               <p class="text-gray-600 mb-4">{{post.content}}</p>
-              <a class="inline-flex items-center text-blue-600 hover:text-blue-400 cursor-pointer">
-                Read more
-                <svg class="h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 12h14"/>
-                  <path d="m12 5 7 7-7 7"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-  
-          <!-- Example Post 2 -->
-          <div class="bg-white text-gray-800 rounded-lg overflow-hidden shadow-md">
-            <a class="block">
-              <img src="https://via.placeholder.com/400x300" alt="Blog post image" class="w-full h-48 object-cover transition-opacity hover:opacity-80" />
-            </a>
-            <div class="p-4">
-              <div class="flex justify-between mb-2">
-                <a class="text-blue-600 text-sm">Category 2</a>
-                <time datetime="2024-08-26" class="text-gray-600 text-sm">August 26, 2024</time>
-              </div>
-              <a class="block text-xl font-bold mb-2 text-gray-800 cursor-pointer">Post Title 2</a>
-              <p class="text-gray-600 mb-4">This is another brief description of the post. It summarizes the content in a few sentences.</p>
-              <a class="inline-flex items-center text-blue-600 hover:text-blue-400">
-                Read more
-                <svg class="h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 12h14"/>
-                  <path d="m12 5 7 7-7 7"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-  
-          <div class="bg-white text-gray-800 rounded-lg overflow-hidden shadow-md">
-            <a class="block">
-              <img src="assets/bird-8788491_1280.jpg" alt="Blog post image" class="w-full h-48 object-cover transition-opacity hover:opacity-80" />
-            </a>
-            <div class="p-4">
-              <div class="flex justify-between mb-2">
-                <a class="text-blue-600 text-sm">Category 3</a>
-                <time datetime="2024-08-25" class="text-gray-600 text-sm">August 25, 2024</time>
-              </div>
-              <a class="block text-xl font-bold mb-2 text-gray-800 cursor-pointer">Post Title 3</a>
-              <p class="text-gray-600 mb-4">This is a third example description of the post. It gives an idea of what the content is about.</p>
-              <a class="inline-flex items-center text-blue-600 hover:text-blue-400 cursor-pointer">
+              <a class="inline-flex items-center text-blue-600 hover:text-blue-400 cursor-pointer" (click)="postDetails(post.postId)">
                 Read more
                 <svg class="h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M5 12h14"/>
@@ -73,28 +33,21 @@
           </div>
         </div>
         
-        <!-- Pagination Controls -->
         <div class="flex justify-center mt-8">
           <nav aria-label="Page navigation">
             <ul class="flex list-style-none">
               <li>
-                <a class="block py-2 px-4 text-blue-600 hover:text-blue-400" href="#" aria-label="Previous">
+                <a class="block py-2 px-4 text-blue-600 hover:text-blue-400 cursor-pointer" (click)="previousPage()" [class.disabled]="currentPage === 1">
                   <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M15 19l-7-7 7-7"/>
                   </svg>
                 </a>
               </li>
-              <li>
-                <a class="block py-2 px-4 text-blue-600 hover:text-blue-400" href="#">1</a>
+              <li *ngFor="let page of getTotalPages(); let i=index">
+                <a class="block py-2 px-4 text-blue-600 hover:text-blue-400 cursor-pointer" (click)="changePage(i+1)">{{i+1}}</a>
               </li>
               <li>
-                <a class="block py-2 px-4 text-blue-600 hover:text-blue-400" href="#">2</a>
-              </li>
-              <li>
-                <a class="block py-2 px-4 text-blue-600 hover:text-blue-400" href="#">3</a>
-              </li>
-              <li>
-                <a class="block py-2 px-4 text-blue-600 hover:text-blue-400" href="#" aria-label="Next">
+                <a class="block py-2 px-4 text-blue-600 hover:text-blue-400 cursor-pointer" (click)="nextPage()" [class.disabled]="currentPage === (posts.length / postsPerPage)">
                   <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 5l7 7-7 7"/>
                   </svg>
@@ -103,6 +56,12 @@
             </ul>
           </nav>
         </div>
+       </ng-container> 
+       <ng-template #noPostFound>
+          <div class="text-center text-gray-600 mt-8">
+            <p>No posts available at the moment.</p>
+          </div>
+       </ng-template>
       </div>
     </main>
   </div>

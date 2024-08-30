@@ -39,11 +39,6 @@ public class ModelMapperConfig {
             protected void configure() {
 
                 using(ctx -> {
-                    Long authorId = ((PostDto) ctx.getSource()).getAuthorId();
-                    return userRepository.findById(authorId).orElse(null);
-                }).map(source, destination.getAuthor());
-
-                using(ctx -> {
                     List<CategoryDto> categoryDtos = ((PostDto) ctx.getSource()).getCategories();
                     return categoryDtos == null ? Collections.emptyList() : categoryDtos.stream()
                         .map(categoryDto -> modelMapper.map(categoryDto, Category.class))
@@ -62,7 +57,6 @@ public class ModelMapperConfig {
         modelMapper.addMappings(new PropertyMap<Post, PostDto>() {
             @Override
             protected void configure() {
-                map().setAuthorId(source.getAuthor().getUserId());
 
                 using(ctx -> {
                     Post post = (Post) ctx.getSource();
@@ -106,7 +100,7 @@ public class ModelMapperConfig {
                 if(commentDto.getPostId() != null){
                     comment.setPost(postRepository.findById(commentDto.getPostId()).orElse(null));
                 }
-                if(commentDto.getParentCommentId() !=null){
+                if(commentDto.getParentCommentId() != null){
                     comment.setParentComment(commentRepository.findById(commentDto.getParentCommentId()).orElse(null));
                 }
                 return comment;

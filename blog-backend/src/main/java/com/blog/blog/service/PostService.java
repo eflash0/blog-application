@@ -47,7 +47,7 @@ public class PostService {
 
     @Transactional
     public PostDto addPost(PostDto postDto){
-        Optional<User> authorPost = userRepository.findById(postDto.getAuthorId());
+        Optional<User> authorPost = userRepository.findById(postDto.getAuthor().getUserId());
         if(!authorPost.isPresent()){
             throw new IllegalArgumentException("the user doesnt exist");
         }
@@ -56,8 +56,7 @@ public class PostService {
         .map(categoryDto -> {
             Category category = modelMapper.map(categoryDto, Category.class);
             return categoryRepository.save(category); 
-        })
-        .toList();
+        }).toList();
         post.setCategories(categories);
         Post savedPost = postRepository.save(post);
         return modelMapper.map(savedPost,PostDto.class);
