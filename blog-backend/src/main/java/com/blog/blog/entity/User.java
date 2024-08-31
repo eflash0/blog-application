@@ -51,6 +51,8 @@ public class User implements UserDetails{
     private Role role;
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Post> posts = new ArrayList<>();
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,orphanRemoval = true)
+    List<Comment> comments = new ArrayList<>();
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;

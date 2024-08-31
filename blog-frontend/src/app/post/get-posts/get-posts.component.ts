@@ -7,16 +7,18 @@ import { FooterComponent } from "../../footer/footer.component";
 import { PostService } from '../../service/post.service';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
+import { TruncatePipe } from "./truncate.pipe";
 @Component({
   selector: 'app-get-posts',
   standalone: true,
-  imports: [DatePipe, CommonModule, SideBarComponent, NavigationBarComponent, FooterComponent],
+  imports: [DatePipe, CommonModule, SideBarComponent, NavigationBarComponent, FooterComponent, TruncatePipe],
   templateUrl: './get-posts.component.html',
   styleUrl: './get-posts.component.css'
 })
 export class GetPostsComponent implements OnInit {
   posts : any[] = [];
   paginatedPosts : any[] = [];
+  filteredPosts : any[] = [];
   postsNumbers : number = 0;
   postsPerPage : number = 6;
   currentPage : number = 1;
@@ -37,6 +39,7 @@ Math: any;
               post.createdAt[6] / 1000000
             )
           }));
+          this.filteredPosts = [...this.posts];
           this.updatePaginatedPosts();
         },
         error => {console.error('error fetching posts',error);}
@@ -47,7 +50,7 @@ Math: any;
     const startIndex = (this.currentPage-1)*this.postsPerPage;
     const endIndex = startIndex + this.postsPerPage;
     console.log(this.posts.length);
-    this.paginatedPosts = this.posts.slice(startIndex,endIndex);
+    this.paginatedPosts = this.filteredPosts.slice(startIndex,endIndex);
   }
 
   changePage(page : number):void{
@@ -74,8 +77,41 @@ Math: any;
     return Array(totalPages).fill(0).map((x, i) => i + 1);
   }
 
-  postDetails(id:number){
-    this.router.navigate(['/postDetails',id]);
+  postDetails(id:number) : void{
+    this.router.navigate(['/posts',id]);
+  }
+
+  onSearch(searchTerm: string): void {
+    console.log(searchTerm);
+    
+    const lowerSearchTerm = searchTerm.toLowerCase();
+    this.filteredPosts = this.posts.filter(post =>
+      post.title.toLowerCase().includes(lowerSearchTerm) ||
+      post.content.toLowerCase().includes(lowerSearchTerm)
+    );
+    this.currentPage = 1;
+    this.updatePaginatedPosts();
+  }
+
+  onCategoryClick(category: string) {
+    this.postService.getPostsByCategory(category).subscribe(
+      response => {
+        this.filteredPosts = response.map((post:any) =>({
+          ...post,
+          createdAt : new Date(
+            post.createdAt[0],
+            post.createdAt[1]-1,
+            post.createdAt[2],
+            post.createdAt[3],
+            post.createdAt[4],
+            post.createdAt[5],
+            post.createdAt[6]/1000000
+          )
+        }));
+        this.updatePaginatedPosts();
+      },
+      error => {console.error('error fetching posts by category',error);}
+    );
   }
 
 }

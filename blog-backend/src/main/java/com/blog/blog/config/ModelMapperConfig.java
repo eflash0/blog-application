@@ -103,6 +103,12 @@ public class ModelMapperConfig {
                 if(commentDto.getParentCommentId() != null){
                     comment.setParentComment(commentRepository.findById(commentDto.getParentCommentId()).orElse(null));
                 }
+                if(commentDto.getAuthor() != null){
+                    comment.setAuthor(userRepository.findById(commentDto.getAuthor().getUserId()).orElse(null));
+                }
+                if(commentDto.getCreatedAt() != null){
+                    comment.setCreatedAt(commentDto.getCreatedAt());
+                }
                 return comment;
             }
         );

@@ -61,4 +61,5 @@ public class CategoryService {
         return categoryRepository.findById(categoryId).orElseThrow(() ->
         new IllegalArgumentException("category not found")).getPosts();
     }
+    
 }

@@ -45,8 +45,8 @@ export class PostService {
 
   getPostsByCategory(category : string) : Observable<any>{
     const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
-    const params = new HttpParams().set('category' , category);
-    const byCategoryUrl = `${this.url}/byCategory`;
-    return this.http.get<any>(byCategoryUrl,{ params , headers });
+    // const params = new HttpParams().set('category' , category);
+    const byCategoryUrl = `${this.url}/byCategory?category=${category}`;
+    return this.http.get<any>(byCategoryUrl,{ /*params ,*/ headers });
   }
 }

@@ -96,4 +96,5 @@ public class PostService {
         List<Post> posts = postRepository.findByCategories_Name(categoryName);
         return posts.stream().map(post -> modelMapper.map(post,PostDto.class)).toList();
     }
+
 }

@@ -30,4 +30,5 @@ export class CategoryService {
     const deleteUrl = `${this.url}/${id}`;
     return this.http.delete<any>(deleteUrl,{ headers });
   }
+
 }

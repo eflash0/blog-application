@@ -1,13 +1,12 @@
-<aside>
-  <app-navigation-bar></app-navigation-bar>
-</aside>
+
+<app-navigation-bar></app-navigation-bar>
 <div class="flex">
     <aside class="w-1/4 p-4 bg-gray-100 shadow-lg rounded-lg">
-      <app-side-bar></app-side-bar>
+      <app-side-bar (search)="onSearch($event)" (categorySelected)="onCategoryClick($event)"></app-side-bar>
     </aside>
     <main class="w-3/4 bg-white py-8 px-4">
       <div class="container mx-auto">
-       <ng-container *ngIf="posts.length>0;else noPostFound">
+       <ng-container *ngIf="filteredPosts.length>0;else noPostFound">
         <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           <div *ngFor="let post of paginatedPosts" class="bg-white text-gray-800 rounded-lg overflow-hidden shadow-md">
             <a class="block">
@@ -21,7 +20,7 @@
                 </time>
               </div>
               <a class="block text-xl font-bold mb-2 text-gray-800 cursor-pointer">{{post.title}}</a>
-              <p class="text-gray-600 mb-4">{{post.content}}</p>
+              <p class="text-gray-600 mb-4">{{post.content | truncate:10}}</p>
               <a class="inline-flex items-center text-blue-600 hover:text-blue-400 cursor-pointer" (click)="postDetails(post.postId)">
                 Read more
                 <svg class="h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">

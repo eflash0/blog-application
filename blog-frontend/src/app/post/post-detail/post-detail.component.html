@@ -1,58 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimal Blog</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.7/dist/tailwind.min.css" rel="stylesheet">
-    <style>
-        /* Custom CSS if needed */
-        @layer base {
-            :root {
-                --background: 0 0% 100%;
-                --foreground: 240 10% 3.9%;
-                --card: 0 0% 100%;
-                --card-foreground: 240 10% 3.9%;
-                --popover: 0 0% 100%;
-                --popover-foreground: 240 10% 3.9%;
-                --primary: 346.8 77.2% 49.8%;
-                --primary-foreground: 355.7 100% 99%;
-                --secondary: 240 4.8% 95.9%;
-                --secondary-foreground: 240 5.9% 10%;
-                --muted: 240 4.8% 95.9%;
-                --muted-foreground: 240 3.8% 45%;
-                --accent: 240 4.8% 95.9%;
-                --accent-foreground: 240 5.9% 10%;
-                --destructive: 0 72% 51%;
-                --destructive-foreground: 0 0% 98%;
-                --border: 240 5.9% 90%;
-                --input: 240 5.9% 90%;
-                --ring: 346.8 77.2% 49.8%;
-                --radius: 0.5rem;
-            }
-        }
 
-        @layer base {
-            * {
-                @apply border-border;
-            }
-
-            body {
-                @apply bg-background text-foreground font-body;
-            }
-
-            h1, h2, h3, h4, h5, h6 {
-                @apply font-heading;
-            }
-        }
-    </style>
-</head>
-<body class="flex flex-col min-h-screen bg-background text-foreground font-body antialiased">
-    <ng-container>
-        <app-navigation-bar></app-navigation-bar>
-    </ng-container>
+<app-navigation-bar></app-navigation-bar>
+<body class="bg-pastel-cyan flex flex-col min-h-screen bg-background text-foreground font-body antialiased">
     <main class="flex-1 p-4 md:p-6">
-        <article class="mb-8">
+        <article *ngIf="post" class="mb-8">
             <img
                 src="assets/bird-8788491_1280.jpg"
                 width="800"
@@ -62,78 +12,23 @@
                 style="aspect-ratio: 2 / 1;"
             />
             <div class="mt-4">
-                <h1 class="text-2xl font-bold mb-2">The Art of Minimalist Web Design</h1>
+                <h1 class="text-2xl font-bold mb-2">{{post.title}}</h1>
                 <div class="flex items-center gap-2 text-sm text-muted-foreground">
                     <div>
                         <img src="https://www.w3schools.com/w3images/nature.jpg" alt="Author" class="w-6 h-6 rounded-full border" />
                     </div>
-                    <span>John Doe</span>
+                    <span>{{post.author.username}}</span>
                     <span>•</span>
-                    <span>May 15, 2023</span>
+                    <span>{{ post.createdAt | date:'MMMM d, yyyy' }}</span>
                 </div>
                 <div class="prose prose-gray mt-4">
                     <p>
-                        In the ever-evolving world of web design, minimalism has emerged as a powerful approach that prioritizes
-                        simplicity, clarity, and elegance. By stripping away unnecessary elements and focusing on the
-                        essentials, minimalist web design creates an immersive and captivating user experience.
+                        {{post.content}}
                     </p>
-                    <!-- More content -->
                 </div>
             </div>
         </article>
-
-        <!-- Comments Section -->
-        <section class="comments-section mt-8">
-            <h2 class="text-xl font-bold mb-4">Comments</h2>
-            <div class="comments-list mb-4">
-                <div class="comment border-b border-muted p-4">
-                    <div class="flex items-center mb-2">
-                        <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Commenter" class="w-8 h-8 rounded-full border mr-2" />
-                        <span class="font-semibold">Alice</span>
-                        <button class="ml-auto text-blue-500 hover:underline" onclick="toggleReplyForm('reply-alice')">Reply</button>
-                    </div>
-                    <p>Great post! I really enjoyed reading it.</p>
-                    <div id="reply-alice" class="reply-form mt-4 hidden">
-                        <textarea placeholder="Add a reply..." rows="2" class="w-full p-2 border border-muted rounded mb-2"></textarea>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Post Reply</button>
-                    </div>
-                    <div class="replies mt-4">
-                        <div class="reply border-l border-muted pl-4 ml-4">
-                            <div class="flex items-center mb-2">
-                                <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Replier" class="w-8 h-8 rounded-full border mr-2" />
-                                <span class="font-semibold">Bob</span>
-                            </div>
-                            <p>Thanks for the insights on minimalist design.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="comment border-b border-muted p-4">
-                    <div class="flex items-center mb-2">
-                        <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Commenter" class="w-8 h-8 rounded-full border mr-2" />
-                        <span class="font-semibold">Bob</span>
-                        <button class="ml-auto text-blue-500 hover:underline" onclick="toggleReplyForm('reply-bob')">Reply</button>
-                    </div>
-                    <p>Thanks for the insights on minimalist design.</p>
-                    <div id="reply-bob" class="reply-form mt-4 hidden">
-                        <textarea placeholder="Add a reply..." rows="2" class="w-full p-2 border border-muted rounded mb-2"></textarea>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Post Reply</button>
-                    </div>
-                </div>
-            </div>
-            <div class="comment-form">
-                <textarea placeholder="Add a comment..." rows="4" class="w-full p-2 border border-muted rounded mb-2"></textarea>
-                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Post Comment</button>
-            </div>
-        </section>
+        <app-comment-section [postId]="post.postId"></app-comment-section>
     </main>
-    <footer class="bg-muted/40 px-4 md:px-6 py-4 text-center">
-        <p class="text-sm text-muted-foreground">&copy; 2024 Minimal Blog. All rights reserved.</p>
-    </footer>
-    <script>
-        function toggleReplyForm(id) {
-            const form = document.getElementById(id);
-            form.classList.toggle('hidden');
-        }
-    </script>
+    <app-footer></app-footer>
 </body>
-</html>

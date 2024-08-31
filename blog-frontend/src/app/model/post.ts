@@ -10,7 +10,7 @@ export class Post {
     author?: User;
     comments?: Comment[];
     categories?: Category[];
-    createAt?: Date;
+    createdAt?: Date;
 
     constructor(
         title: string,
@@ -20,7 +20,7 @@ export class Post {
         imagePath?: string,
         comments?: Comment[],
         categories?: Category[],
-        createAt?:Date
+        createdAt?:Date
     ) {
         this.title = title;
         this.content = content;
@@ -29,6 +29,6 @@ export class Post {
         this.imagePath = imagePath;
         this.comments = comments;
         this.categories = categories;
-        this.createAt = createAt;
+        this.createdAt = createdAt;
     }
 }
