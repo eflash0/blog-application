@@ -1,15 +1,22 @@
+import { User } from "./user";
+
 export class Comment{
-    commentId : number;
+    commentId? : number;
     content : string;
     parentCommentId? : number;
     postId? : number;
-    constructor(commentId : number,
-        content : string,
+    author? : User;
+    showReplies? : boolean;
+    constructor(content : string,
+        commentId? : number,
+        author? : User,
         parentCommentId? : number,
-        postId? : number){
+        postId? : number
+    ){
         this.commentId = commentId;
         this.content = content;
         this.parentCommentId = parentCommentId;
         this.postId = postId;
+        this.author = author;
     }
 }

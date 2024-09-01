@@ -72,11 +72,12 @@ public class CommentService {
         .collect(Collectors.toList());
     }
 
-    public CommentDto addReply(CommentDto replyDto){
-        Optional<Comment> commentOpt = commentRepository.findById(replyDto.getParentCommentId());
+    public CommentDto addReply(CommentDto replyDto,Long id){
+        Optional<Comment> commentOpt = commentRepository.findById(id);
         if(!commentOpt.isPresent()){
             throw new IllegalArgumentException("comment parent doesnt found");
         }
+        replyDto.setParentCommentId(id);
         Comment parentComment = commentOpt.get();
         Comment reply = modelMapper.map(replyDto,Comment.class);
         if(!parentComment.getReplies().contains(reply)){

@@ -19,6 +19,7 @@ public class CommentDto {
     private Long parentCommentId;
     private UserDto author;
     private LocalDateTime createdAt;
+    List<CommentDto> replies;
     public CommentDto(Long commentId, String content, Long postId, Long parentCommentId) {
         this.commentId = commentId;
         this.content = content;

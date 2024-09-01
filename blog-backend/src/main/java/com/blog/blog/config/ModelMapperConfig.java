@@ -1,6 +1,7 @@
 package com.blog.blog.config;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Collections;
 
 import org.modelmapper.ModelMapper;
@@ -108,6 +109,12 @@ public class ModelMapperConfig {
                 }
                 if(commentDto.getCreatedAt() != null){
                     comment.setCreatedAt(commentDto.getCreatedAt());
+                }
+                if (commentDto.getReplies() != null) {
+                    List<Comment> replies = commentDto.getReplies().stream()
+                        .map(replyDto -> modelMapper.map(replyDto, Comment.class))
+                        .collect(Collectors.toList());
+                    comment.setReplies(replies);
                 }
                 return comment;
             }

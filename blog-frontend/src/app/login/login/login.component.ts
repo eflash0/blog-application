@@ -22,7 +22,7 @@ export class LoginComponent {
       this.authService.login(this.loginRequest).subscribe(
         response => {
           console.log('login with success');
-          localStorage.setItem('userId',response.userId);
+          localStorage.setItem('token',response.token);
         },
         error => {console.error('login failed',error);}
       );
