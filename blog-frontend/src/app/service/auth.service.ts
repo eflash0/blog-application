@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
@@ -25,6 +25,15 @@ export class AuthService {
     const validateUrl = `${this.url}/validate-token`;
     const token = localStorage.getItem('token');
     return this.http.post<any>(validateUrl,token);
+  }
+
+  extractUsername() : string{
+    const token = localStorage.getItem('token');
+    if(token){
+      const decodeToken : any = jwtDecode(token);
+      return decodeToken.sub;
+    }
+    return '';
   }
 
   getRole() : string{

@@ -20,6 +20,7 @@ export class CommentSectionComponent implements OnInit {
   comment = new Comment('');
   replies : any;
   isAdmin : boolean = false;
+  username : string = '';
   constructor(private commentService : CommentService,private postService : PostService,
     private authService : AuthService
   ) { }
@@ -57,6 +58,9 @@ export class CommentSectionComponent implements OnInit {
       }
     );
     this.isAdmin = this.authService.isAdmin();    
+    this.username =this.authService.extractUsername();
+    console.log(this.username);
+    
   }
   
 

@@ -8,7 +8,7 @@
                 <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Commenter" class="w-8 h-8 rounded-full border mr-2" />
                 <span class="font-semibold">{{comment.author.username}}</span>
                 <span class="text-sm text-muted-foreground ml-2">{{ comment.createdAt | date:'MMMM d, yyyy' }}</span>
-                <div *ngIf="isAdmin" class="ml-auto flex gap-2">
+                <div *ngIf="isAdmin || comment.author.username == username" class="ml-auto flex gap-2">
                     <button class="text-blue-500 hover:underline">
                         <i class="fas fa-edit"></i>
                     </button>

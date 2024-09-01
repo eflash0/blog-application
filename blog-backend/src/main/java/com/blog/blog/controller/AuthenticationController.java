@@ -2,7 +2,6 @@ package com.blog.blog.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +39,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(userDto);
     }
 
-    @GetMapping("/validate-token")
+    @PostMapping("/validate-token")
     public ResponseEntity<Boolean> validateToke(@RequestBody String token){
         Boolean valid = jwtUtil.validateToken(token);
         return ResponseEntity.ok(valid);
