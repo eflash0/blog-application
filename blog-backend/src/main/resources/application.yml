@@ -14,6 +14,11 @@ spring:
         properties: 
             hibernate:          
                 format_sql: true
+
+    mvc:
+        static-path-pattern: /images/**
+    resources:
+        spring.web.resources.static-locations: C:\Users\admin\Desktop\New folder\spring\blog\blog-backend\src\main\resources\static\uploads           
 server:
     port: 8082
     error:

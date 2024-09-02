@@ -7,7 +7,7 @@ import { FooterComponent } from "../../footer/footer.component";
 import { PostService } from '../../service/post.service';
 import { UserService } from '../../service/user.service';
 import { Router } from '@angular/router';
-import { TruncatePipe } from "./truncate.pipe";
+import { TruncatePipe } from "../../truncate.pipe";
 @Component({
   selector: 'app-get-posts',
   standalone: true,
@@ -114,4 +114,8 @@ Math: any;
     );
   }
 
+
+  userProfile(userId : number) : void{
+    this.router.navigate(['/profile'], { state: {userId} });
+  }
 }

@@ -1,20 +1,26 @@
-
 <app-navigation-bar></app-navigation-bar>
 <div class="flex">
-    <aside class="w-1/4 p-4 bg-gray-100 shadow-lg rounded-lg">
-      <app-side-bar (search)="onSearch($event)" (categorySelected)="onCategoryClick($event)"></app-side-bar>
-    </aside>
-    <main class="w-3/4 bg-white py-8 px-4">
-      <div class="container mx-auto">
-       <ng-container *ngIf="filteredPosts.length>0;else noPostFound">
+  <main class="w-3/4 bg-white py-8 px-4">
+    <div class="container mx-auto">
+      <!-- User Info -->
+      <div class="mb-8 p-4 bg-blue-100 rounded-lg shadow-lg">
+        <div class="flex items-center">
+          <img [src]="user?.profileImage" alt="User profile image" class="w-16 h-16 rounded-full mr-4" />
+          <div>
+            <h2 class="text-xl font-bold text-gray-800">{{user?.username}}</h2>
+            <p class="text-gray-600">{{user?.email}}</p>
+          </div>
+        </div>
+      </div>
+      <!-- User Posts -->
+      <ng-container *ngIf="posts.length > 0; else noPostFound">
         <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          <div *ngFor="let post of paginatedPosts" class="bg-white text-gray-800 rounded-lg overflow-hidden shadow-md">
+          <div *ngFor="let post of posts" class="bg-white text-gray-800 rounded-lg overflow-hidden shadow-md">
             <a class="block">
               <img [src]="post.imagePath" alt="Blog post image" class="w-full h-48 object-cover transition-opacity hover:opacity-80" />
             </a>
             <div class="p-4">
               <div class="flex justify-between mb-2">
-                <a class="text-blue-600 text-sm cursor-pointer" (click)="userProfile(post.author.userId)">{{post.author.username}}</a>
                 <time [attr.datetime]="post.createdAt | date:'yyyy-MM-ddTHH:mm:ss'" class="text-gray-600 text-sm">
                   {{ post.createdAt | date:'MMMM d, yyyy' }}
                 </time>
@@ -31,7 +37,6 @@
             </div>
           </div>
         </div>
-        
         <div class="flex justify-center mt-8">
           <nav aria-label="Page navigation">
             <ul class="flex list-style-none">
@@ -55,15 +60,15 @@
             </ul>
           </nav>
         </div>
-       </ng-container> 
-       <ng-template #noPostFound>
-          <div class="text-center text-gray-600 mt-8">
-            <p>No posts available at the moment.</p>
-          </div>
-       </ng-template>
-      </div>
-    </main>
-  </div>
-  <ng-container>
-    <app-footer></app-footer>
-  </ng-container>
+      </ng-container>
+      <ng-template #noPostFound>
+        <div class="text-center text-gray-600 mt-8">
+          <p>No posts available at the moment.</p>
+        </div>
+      </ng-template>
+    </div>
+  </main>
+</div>
+<ng-container>
+  <app-footer></app-footer>
+</ng-container>

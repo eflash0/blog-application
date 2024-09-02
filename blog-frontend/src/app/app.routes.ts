@@ -6,6 +6,7 @@ import { NavigationBarComponent } from './navigation-bar/navigation-bar.componen
 import { PostDetailComponent } from './post/post-detail/post-detail.component';
 import { CreatePostComponent } from './post/create-post/create-post.component';
 import { CommentSectionComponent } from './comment/comment-section/comment-section.component';
+import { UserProfileComponent } from './user/user-profile/user-profile.component';
 
 export const routes: Routes = [
     {path : 'login', component : LoginComponent},
@@ -14,5 +15,6 @@ export const routes: Routes = [
     {path : 'navigation-bar', component : NavigationBarComponent},
     {path : 'create-post', component : CreatePostComponent},
     {path : 'posts/:id', component : PostDetailComponent},
+    {path : 'profile', component : UserProfileComponent},
     {path : 'comment', component : CommentSectionComponent}
 ];
