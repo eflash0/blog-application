@@ -124,4 +124,12 @@ public class UserTest {
         verify(userRepository).save(any(User.class));
         verify(modelMapper).map(savedUser, UserDto.class);
     }
+
+    // @Test 
+    // public void findByUsernameTest(){
+    //     when(userRepository.findByUsername("test")).thenReturn(Optional.of(user));
+    //     UserDto result = userService.getUserByUsername("test");
+    //     assertNotNull(result);
+    //     assertEquals(userDto.getUsername(), result.getUsername());
+    // }
 }

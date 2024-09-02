@@ -105,7 +105,7 @@ public class ModelMapperConfig {
                     comment.setParentComment(commentRepository.findById(commentDto.getParentCommentId()).orElse(null));
                 }
                 if(commentDto.getAuthor() != null){
-                    comment.setAuthor(userRepository.findById(commentDto.getAuthor().getUserId()).orElse(null));
+                    comment.setAuthor(userRepository.findByUsername(commentDto.getAuthor().getUsername()).orElse(null));
                 }
                 if(commentDto.getCreatedAt() != null){
                     comment.setCreatedAt(commentDto.getCreatedAt());

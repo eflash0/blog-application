@@ -31,4 +31,10 @@ export class CommentService {
     const repliesUrl = `${this.url}/${id}/replies`;
     return this.http.get<any>(repliesUrl,{ headers });
   }
+
+  addReply(reply:any,id : number) : Observable<any>{
+    const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
+    const replyUrl = `${this.url}/${id}/reply`;
+    return this.http.post<any>(replyUrl,reply,{ headers });
+  }
 }

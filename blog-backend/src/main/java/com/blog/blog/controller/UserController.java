@@ -32,4 +32,10 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/username/{username}")
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username){
+        UserDto user = userService.getUserByUsername(username);
+        return ResponseEntity.ok(user);
+    }
+
 }

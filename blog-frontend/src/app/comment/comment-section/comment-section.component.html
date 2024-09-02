@@ -1,5 +1,5 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-<section class="comments-section mt-8">
+<section class="bg-pastel-cyan comments-section mt-8">
     <h2 class="text-xl font-bold mb-4">Comments</h2>
     <div class="comments-list mb-4">
         <!-- Comment 1 -->
@@ -8,25 +8,44 @@
                 <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Commenter" class="w-8 h-8 rounded-full border mr-2" />
                 <span class="font-semibold">{{comment.author.username}}</span>
                 <span class="text-sm text-muted-foreground ml-2">{{ comment.createdAt | date:'MMMM d, yyyy' }}</span>
-                <div *ngIf="isAdmin || comment.author.username == username" class="ml-auto flex gap-2">
-                    <button class="text-blue-500 hover:underline">
+                <div *ngIf="isAdmin || comment.author.username === username" class="ml-auto flex gap-2">
+                    <button (click)="modifyComment(comment)" class="text-blue-500 hover:underline">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="text-red-500 hover:underline">
+                    <button (click)="deleteComment(comment.commentId)" *ngIf="isAdmin || comment.author.username === username" class="text-red-500 hover:underline">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
             </div>
-            <p>{{comment.content}}</p>
-            <!-- Reply Button -->
-            <button (click)="toggleReplies(comment)" class="text-blue-500 hover:underline mt-2">
-                {{ comment.showReplies ? 'Hide Replies' : 'Show Replies' }}
-            </button>
-            <!-- Reply Form -->
-            <div id="reply-alice" class="reply-form mt-4 hidden">
-                <textarea placeholder="Add a reply..." rows="2" class="w-full p-2 border border-muted rounded mb-2"></textarea>
-                <button class="bg-blue-500 text-white px-4 py-2 rounded">Post Reply</button>
+
+            <!-- Edit Mode -->
+            <div *ngIf="comment.isEditing; else viewMode">
+                <textarea [(ngModel)]="editedComment.content" rows="3" class="w-full p-2 border border-muted rounded mb-2"></textarea>
+                <button (click)="saveComment(comment)" class="bg-pastel-rose text-white px-4 py-2 hover-rose rounded">Save</button>
+                <button (click)="cancelEdit(comment)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-gray-600 hover:text-white">Cancel</button>            
             </div>
+            <!-- View Mode -->
+            <ng-template #viewMode>
+                <p>{{comment.content}}</p>
+            </ng-template>
+
+            <!-- Reply Button -->
+            <div class="mt-4">
+                <button (click)="toggleReplies(comment)" class="text-blue-500 hover:underline mt-2">
+                    {{ comment.showReplies ? 'Hide Replies' : 'Show Replies' }}
+                </button>
+                <button (click)="toggleReplyForm(comment)" class="text-blue-500 hover:underline ml-4">
+                    Reply
+                </button>
+            </div>
+
+            <!-- Reply Form -->
+            <div *ngIf="comment.addReply" class="reply-form mt-4">
+                <textarea [(ngModel)]="reply.content" placeholder="Add a reply..." rows="2" class="w-full p-2 border border-muted rounded mb-2"></textarea>
+                <button (click)="addReply(comment)" class="bg-pastel-rose text-white px-4 py-2 hover-rose rounded">Reply</button>
+                <button (click)="cancelReply(comment)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-gray-600 hover:text-white">Cancel</button>            
+            </div>
+
             <!-- Replies -->
             <div *ngIf="comment.showReplies" class="replies mt-4">
                 <div *ngFor="let reply of comment.replies" class="reply border-l border-muted pl-4 ml-4">
@@ -35,15 +54,23 @@
                         <span class="font-semibold">{{ reply.author.username }}</span>
                         <span class="text-sm text-muted-foreground ml-2">{{ reply.createdAt | date:'MMMM d, yyyy' }}</span>
                         <div class="ml-auto flex gap-2">
-                            <button class="text-blue-500 hover:underline">
+                            <button (click)="modifyComment(reply)" class="text-blue-500 hover:underline">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="text-red-500 hover:underline">
+                            <button (click)="deleteComment(reply.commentId)" *ngIf="isAdmin || reply.author.username === username" class="text-red-500 hover:underline">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
                     </div>
-                    <p>{{ reply.content }}</p>
+                    <div *ngIf="reply.isEditing; else viewMode">
+                        <textarea [(ngModel)]="editedComment.content" rows="3" class="w-full p-2 border border-muted rounded mb-2"></textarea>
+                        <button (click)="saveComment(reply)" class="bg-pastel-rose text-white px-4 py-2 hover-rose rounded">Save</button>
+                        <button (click)="cancelEdit(reply)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-gray-600 hover:text-white">Cancel</button>            
+                    </div>
+                    <!-- View Mode -->
+                    <ng-template #viewMode>
+                        <p>{{reply.content}}</p>
+                    </ng-template>
                 </div>
             </div>
         </div>

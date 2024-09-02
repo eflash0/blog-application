@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user.service';
 import { User } from '../../model/user';
 import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-create-post',
@@ -20,10 +21,10 @@ import { Router } from '@angular/router';
 export class CreatePostComponent implements OnInit {
   post = new Post('','');
   categories : any;
-  id : number = 1; 
+  username : string = ''; 
   user : any;
   constructor(private postService : PostService,private categoryService : CategoryService,
-    private userService : UserService , private router : Router
+    private userService : UserService , private router : Router ,private authService : AuthService
   ) {}
 
   ngOnInit(): void {
@@ -34,10 +35,11 @@ export class CreatePostComponent implements OnInit {
         error => {console.error('error fetching categories',error);
         }
       );
+      this.username = this.authService.extractUsername();
   }
 
   create() : void{
-    this.userService.findUserById(this.id).subscribe(
+    this.userService.findUserByUsername(this.username).subscribe(
       response => {
         this.user = response;
         this.post.author = this.user;

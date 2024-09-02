@@ -70,4 +70,10 @@ public class UserService implements UserDetailsService{
         new IllegalArgumentException("user not found"));
         return modelMapper.map(user,UserDto.class);
     }
+
+    public UserDto getUserByUsername(String username){
+        User user = userRepository.findByUsername(username).orElseThrow(() -> 
+        new IllegalArgumentException("user not found"));
+        return modelMapper.map(user,UserDto.class);
+    }
 }

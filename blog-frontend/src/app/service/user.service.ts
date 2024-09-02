@@ -14,4 +14,11 @@ export class UserService {
     const user = `${this.url}/1`;
     return this.http.get<any>(user,{ headers });
   }
+
+  findUserByUsername(username : string) : Observable<any>{
+    const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
+    const user = `${this.url}/username/${username}`;
+    return this.http.get<any>(user,{ headers });
+  }
 }
+
