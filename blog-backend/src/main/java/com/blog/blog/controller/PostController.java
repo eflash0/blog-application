@@ -3,6 +3,7 @@ package com.blog.blog.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.blog.dto.CommentDto;
 import com.blog.blog.dto.PostDto;
@@ -43,15 +46,17 @@ public class PostController {
         return ResponseEntity.ok(comments);
     }
 
-    @PostMapping
-    public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
-        PostDto post = postService.addPost(postDto);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostDto> createPost(@RequestPart("post") PostDto postDto, 
+        @RequestPart("file") MultipartFile imageFile) {
+        PostDto post = postService.addPost(postDto, imageFile);
         return ResponseEntity.ok(post);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,@PathVariable Long id){
-        PostDto post = postService.updatePost(postDto, id);
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,
+        @RequestPart("file") MultipartFile imageFile,@PathVariable Long id){
+        PostDto post = postService.updatePost(postDto,imageFile, id);
         return ResponseEntity.ok(post);
     }
 

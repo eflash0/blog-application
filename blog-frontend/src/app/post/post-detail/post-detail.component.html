@@ -4,7 +4,7 @@
     <main class="flex-1 p-4 md:p-6">
         <article *ngIf="post" class="mb-8">
             <img
-                src="assets/bird-8788491_1280.jpg"
+                [src]="'http://localhost:8082/images/'+post.imagePath"
                 width="800"
                 height="400"
                 alt="Blog Post Image"

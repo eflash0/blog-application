@@ -15,6 +15,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.blog.dto.PostDto;
 import com.blog.blog.entity.Post;
@@ -34,6 +36,7 @@ public class PostTest {
 
     private Post post;
     private PostDto postDto;
+    MultipartFile file;
 
     @BeforeEach
     void setup(){
@@ -44,6 +47,8 @@ public class PostTest {
         postDto = new PostDto();
         postDto.setTitle("test");
         postDto.setContent("test test");
+
+        file = new MockMultipartFile("null"," null".getBytes());
     }
 
     @Test
@@ -52,7 +57,7 @@ public class PostTest {
         when(modelMapper.map(postDto, Post.class)).thenReturn(post);
         when(postRepository.save(post)).thenReturn(post);
         when(modelMapper.map(post, PostDto.class)).thenReturn(postDto);
-        PostDto result = postService.addPost(postDto);
+        PostDto result = postService.addPost(postDto,file);
         assertNotNull(result);
         assertEquals(postDto.getPostId(), result.getPostId());
         assertEquals(postDto.getTitle(), result.getTitle());

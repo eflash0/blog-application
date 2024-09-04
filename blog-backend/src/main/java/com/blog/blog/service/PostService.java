@@ -6,8 +6,16 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.blog.blog.dto.CommentDto;
 import com.blog.blog.dto.PostDto;
@@ -34,6 +42,9 @@ public class PostService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
     public PostDto findPostById(Long postId){
         Post post = postRepository.findById(postId).orElseThrow(() ->
         new IllegalArgumentException("post not found"));
@@ -46,12 +57,31 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto addPost(PostDto postDto){
+    public PostDto addPost(PostDto postDto,MultipartFile imageFile){
         Optional<User> authorPost = userRepository.findById(postDto.getAuthor().getUserId());
         if(!authorPost.isPresent()){
             throw new IllegalArgumentException("the user doesnt exist");
         }
         Post post = modelMapper.map(postDto,Post.class);
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String fileName = imageFile.getOriginalFilename();
+            if (fileName != null && uploadDir != null) {
+                // Define the upload directory
+                Path uploadDirectory = Paths.get(uploadDir);
+                Path filePath = uploadDirectory.resolve(fileName);
+    
+                try {
+                    // Ensure the directory exists
+                    Files.createDirectories(uploadDirectory);
+    
+                    // Save the file
+                    Files.write(filePath, imageFile.getBytes());
+                    post.setImagePath(fileName);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to store file: " + e.getMessage(), e);
+                }
+            }
+        }
         List<Category> categories = postDto.getCategories()==null?Collections.emptyList():post.getCategories().stream()
         .map(categoryDto -> {
             Category category = modelMapper.map(categoryDto, Category.class);
@@ -62,7 +92,7 @@ public class PostService {
         return modelMapper.map(savedPost,PostDto.class);
     }
 
-    public PostDto updatePost(PostDto postDto,Long postId){
+    public PostDto updatePost(PostDto postDto,MultipartFile imageFile,Long postId){
         Post existingPost = postRepository.findById(postId).orElseThrow(() ->
         new IllegalArgumentException("post not found"));
         if(postDto.getContent()!=null && postDto.getContent().isEmpty()){
@@ -71,6 +101,25 @@ public class PostService {
         if(postDto.getTitle()!=null && postDto.getTitle().isEmpty()){
             existingPost.setTitle(postDto.getTitle());
         }
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String fileName = imageFile.getOriginalFilename();
+            if (fileName != null && uploadDir != null) {
+                // Define the upload directory
+                Path uploadDirectory = Paths.get(uploadDir);
+                Path filePath = uploadDirectory.resolve(fileName);
+    
+                try {
+                    // Ensure the directory exists
+                    Files.createDirectories(uploadDirectory);
+    
+                    // Save the file
+                    Files.write(filePath, imageFile.getBytes());
+                    existingPost.setImagePath(fileName);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to store file: " + e.getMessage(), e);
+                }
+            }
+    }
         // if(postDto.getCategoryName()!=null && !postDto.getCategoryName().isEmpty()){
         //     Category category = categoryRepository.findByName(postDto.getCategoryName()).orElseThrow(
         //     () -> new IllegalArgumentException("category not found"));

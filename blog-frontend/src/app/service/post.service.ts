@@ -20,9 +20,15 @@ export class PostService {
     return this.http.get<any>(postUrl,{ headers });
   }
 
-  addPost(post : any) : Observable<any>{
+  addPost(post : any,file : File | null) : Observable<any>{
     const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
-    return this.http.post<any>(this.url,post,{ headers })
+    const formData: FormData = new FormData();
+    formData.append('post', new Blob([JSON.stringify(post)], {type: 'application/json'}));
+    
+    if (file) {
+      formData.append('file', file);
+    }
+    return this.http.post<any>(this.url,formData,{ headers })
   }
 
   updatePost(post : any,id : number) : Observable<any>{

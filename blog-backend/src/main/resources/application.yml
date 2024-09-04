@@ -15,14 +15,20 @@ spring:
             hibernate:          
                 format_sql: true
 
+    web:
+        resources:
+            static-locations:
+                - classpath:/static/
     mvc:
-        static-path-pattern: /images/**
-    resources:
-        spring.web.resources.static-locations: C:\Users\admin\Desktop\New folder\spring\blog\blog-backend\src\main\resources\static\uploads           
+        static-path-pattern: /**
+
+file:
+  upload-dir: C:\Users\admin\Desktop\New folder\spring\blog\blog-backend\src\main\resources\static\uploads
+    
 server:
     port: 8082
     error:
         include-message: always
 jwt:
     secret: 2+LaR6mKTpaFTMK4NKlHUQ5JgMtQFK0zGGSE/OUgJR8oU7Vhihb0gA8RofYlZZ/30kN+My5iIvuvYPDDMld5hg==
-    expiration: 36000                        
+    expiration: 36000

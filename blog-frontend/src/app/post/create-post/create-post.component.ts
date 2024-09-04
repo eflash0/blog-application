@@ -7,7 +7,6 @@ import { FormsModule } from '@angular/forms';
 import { CategoryService } from '../../service/category.service';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user.service';
-import { User } from '../../model/user';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 
@@ -23,8 +22,9 @@ export class CreatePostComponent implements OnInit {
   categories : any;
   username : string = ''; 
   user : any;
+  selectedFile: File | null = null;
   constructor(private postService : PostService,private categoryService : CategoryService,
-    private userService : UserService , private router : Router ,private authService : AuthService
+    private userService : UserService , private router : Router ,private authService : AuthService,
   ) {}
 
   ngOnInit(): void {
@@ -39,24 +39,29 @@ export class CreatePostComponent implements OnInit {
   }
 
   create() : void{
+    
     this.userService.findUserByUsername(this.username).subscribe(
       response => {
         this.user = response;
         this.post.author = this.user;
         const selectedCategories = this.categories.filter((category:any) => category.selected);
-        // this.post.authorId = Number(localStorage.getItem('userId'));
-        console.log(this.post);
-        this.post.categories = selectedCategories.map((category: any) => ({categoryId : category.categoryId,name : category.name}));
-        this.postService.addPost(this.post).subscribe(
+        this.post.categories = selectedCategories.map((category: any) => ({categoryId: category.categoryId, name: category.name}));
+
+        this.postService.addPost(this.post, this.selectedFile).subscribe(
           response => {
-            console.log('post added with success',response);
+            console.log('Post added successfully', response);
             this.router.navigate(['/get-posts']);
           },
-          error => {console.error('error adding post',error);}
+          error => {console.error('Error adding post', error);}
         );
       },
-      error => {console.error('error fetching user',error);
-      }
+      error => {console.error('Error fetching user', error);}
     );
   }
+
+  onFileSelected(event : any){
+    this.selectedFile = event.target.files[0];
+  }
+
+
 }
