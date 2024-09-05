@@ -17,7 +17,7 @@
         <div class="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
           <div *ngFor="let post of posts" class="bg-white text-gray-800 rounded-lg overflow-hidden shadow-md">
             <a class="block">
-              <img [src]="post.imagePath" alt="Blog post image" class="w-full h-48 object-cover transition-opacity hover:opacity-80" />
+              <img [src]="'http://localhost:8082/images/'+post.imagePath" alt="Blog post image" class="w-full h-48 object-cover transition-opacity hover:opacity-80" />
             </a>
             <div class="p-4">
               <div class="flex justify-between mb-2">
@@ -27,7 +27,7 @@
               </div>
               <a class="block text-xl font-bold mb-2 text-gray-800 cursor-pointer">{{post.title}}</a>
               <p class="text-gray-600 mb-4">{{post.content | truncate:10}}</p>
-              <a class="inline-flex items-center text-blue-600 hover:text-blue-400 cursor-pointer" (click)="postDetails(post.postId)">
+              <a (click)="act()" class="inline-flex items-center text-blue-600 hover:text-blue-400 cursor-pointer" (click)="postDetails(post.postId)">
                 Read more
                 <svg class="h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M5 12h14"/>

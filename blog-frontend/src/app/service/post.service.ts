@@ -31,10 +31,16 @@ export class PostService {
     return this.http.post<any>(this.url,formData,{ headers })
   }
 
-  updatePost(post : any,id : number) : Observable<any>{
+  updatePost(post : any,file : File | null,id : number) : Observable<any>{
     const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
     const updateUrl = `${this.url}/${id}`;
-    return this.http.put<any>(updateUrl,post,{ headers });
+    const formData: FormData = new FormData();
+    formData.append('post', new Blob([JSON.stringify(post)], {type: 'application/json'}));
+    
+    if (file) {
+      formData.append('file', file);
+    }
+    return this.http.put<any>(updateUrl,formData,{ headers });
   }
 
   deletePost(id : number) : Observable<any>{

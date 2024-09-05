@@ -1,4 +1,3 @@
-
 <app-navigation-bar></app-navigation-bar>
 <body class="bg-pastel-cyan flex flex-col min-h-screen bg-background text-foreground font-body antialiased">
     <main class="flex-1 p-4 md:p-6">
@@ -12,12 +11,22 @@
                 style="aspect-ratio: 2 / 1;"
             />
             <div class="mt-4">
-                <h1 class="text-2xl font-bold mb-2">{{post.title}}</h1>
+                <div class="flex justify-between items-center mb-2">
+                    <h1 class="text-2xl font-bold">{{post.title}}</h1>
+                    <div *ngIf="isAdmin || post.author.username === username" class="ml-auto flex gap-2">
+                        <button (click)="editPost(post.postId)" class="text-blue-500 hover:underline">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button (click)="deletePost(post.postId)" *ngIf="isAdmin || post.author.username === username" class="text-red-500 hover:underline">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="flex items-center gap-2 text-sm text-muted-foreground">
                     <div>
-                        <img src="https://www.w3schools.com/w3images/nature.jpg" alt="Author" class="w-6 h-6 rounded-full border" />
+                        <img (click)="userProfile(post.author.userId)" src="https://www.w3schools.com/w3images/nature.jpg" alt="Author" class="w-6 h-6 rounded-full border" />
                     </div>
-                    <span>{{post.author.username}}</span>
+                    <a class="text-blue-600 text-sm cursor-pointer" (click)="userProfile(post.author.userId)">{{post.author.username}}</a>
                     <span>•</span>
                     <span>{{ post.createdAt | date:'MMMM d, yyyy' }}</span>
                 </div>
@@ -28,7 +37,7 @@
                 </div>
             </div>
         </article>
-        <app-comment-section [postId]="post.postId"></app-comment-section>
+        <app-comment-section *ngIf="post" [postId]="post.postId"></app-comment-section>
     </main>
     <app-footer></app-footer>
 </body>

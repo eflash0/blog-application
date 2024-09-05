@@ -5,6 +5,7 @@ import { UserService } from '../../service/user.service';
 import { AuthService } from '../../service/auth.service';
 import { CommonModule } from '@angular/common';
 import { TruncatePipe } from '../../truncate.pipe';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -21,16 +22,17 @@ export class UserProfileComponent implements OnInit {
   postsPerPage : number = 6;
   currentPage : number = 1;
   paginatedPosts : any
-  constructor(private userService : UserService,private authService : AuthService) { }
+  constructor(private userService : UserService,private authService : AuthService,
+    private route : ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    this.userId = history.state.userId;
+    this.userId = +this.route.snapshot.paramMap.get('id')!;
     this.username = this.authService.extractUsername();
     this.userService.findUserByUsername(this.username).subscribe(
       response => {
         this.user = response;
         console.log(this.user.userId);
-        
       },
       error => {console.error('error fetching user',error);}
     );
@@ -53,9 +55,10 @@ export class UserProfileComponent implements OnInit {
       },
       error => {
         console.error('error fetching posts',error);
-        
       }
     );
+    console.log(this.posts.length);
+    
   }
 
   getTotalPages(): number[] {
@@ -93,4 +96,9 @@ export class UserProfileComponent implements OnInit {
 
   }
 
+  act(){
+    console.log(this.userId);
+    
+    console.log(this.posts[0]);
+  }
 }

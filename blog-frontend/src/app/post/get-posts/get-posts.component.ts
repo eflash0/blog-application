@@ -116,6 +116,6 @@ Math: any;
 
 
   userProfile(userId : number) : void{
-    this.router.navigate(['/profile'], { state: {userId} });
+    this.router.navigate(['/users',userId]);
   }
 }

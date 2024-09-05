@@ -1,0 +1,17 @@
+@import url(https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css);
+
+  :root {
+    --pastel-blue: #a8dadc;
+    --pastel-green: #b9fbc0;
+    --pastel-yellow: #fdfd96;
+    --pastel-pink: #ffcbf2;
+  }
+  .bg-pastel-blue { background-color: var(--pastel-blue); }
+  .bg-pastel-green { background-color: var(--pastel-green); }
+  .bg-pastel-yellow { background-color: var(--pastel-yellow); }
+  .bg-pastel-pink { background-color: var(--pastel-pink); }
+  .text-pastel-pink { color: var(--pastel-pink); }
+
+  .bg-pastel-cyan { background-color: #F0F9FC; }
+    .bg-pastel-rose { background-color: #EEC3E8; }
+    .hover-rose:hover { background-color: #e698d2; }
