@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import java.nio.file.Path;
@@ -66,15 +67,11 @@ public class PostService {
         if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = imageFile.getOriginalFilename();
             if (fileName != null && uploadDir != null) {
-                // Define the upload directory
                 Path uploadDirectory = Paths.get(uploadDir);
                 Path filePath = uploadDirectory.resolve(fileName);
     
                 try {
-                    // Ensure the directory exists
-                    Files.createDirectories(uploadDirectory);
-    
-                    // Save the file
+                    Files.createDirectories(uploadDirectory);    
                     Files.write(filePath, imageFile.getBytes());
                     post.setImagePath(fileName);
                 } catch (IOException e) {
@@ -82,7 +79,7 @@ public class PostService {
                 }
             }
         }
-        List<Category> categories = postDto.getCategories()==null?Collections.emptyList():post.getCategories().stream()
+        List<Category> categories = postDto.getCategories()==null?Collections.emptyList():postDto.getCategories().stream()
         .map(categoryDto -> {
             Category category = modelMapper.map(categoryDto, Category.class);
             return categoryRepository.save(category); 
@@ -92,39 +89,39 @@ public class PostService {
         return modelMapper.map(savedPost,PostDto.class);
     }
 
+    @Transactional
     public PostDto updatePost(PostDto postDto,MultipartFile imageFile,Long postId){
         Post existingPost = postRepository.findById(postId).orElseThrow(() ->
         new IllegalArgumentException("post not found"));
-        if(postDto.getContent()!=null && postDto.getContent().isEmpty()){
+        if(postDto.getContent()!=null && !postDto.getContent().isEmpty()){
             existingPost.setContent(postDto.getContent());
         }
-        if(postDto.getTitle()!=null && postDto.getTitle().isEmpty()){
+        if(postDto.getTitle()!=null && !postDto.getTitle().isEmpty()){
             existingPost.setTitle(postDto.getTitle());
         }
         if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = imageFile.getOriginalFilename();
             if (fileName != null && uploadDir != null) {
-                // Define the upload directory
                 Path uploadDirectory = Paths.get(uploadDir);
                 Path filePath = uploadDirectory.resolve(fileName);
     
                 try {
-                    // Ensure the directory exists
                     Files.createDirectories(uploadDirectory);
     
-                    // Save the file
                     Files.write(filePath, imageFile.getBytes());
                     existingPost.setImagePath(fileName);
                 } catch (IOException e) {
                     throw new RuntimeException("Failed to store file: " + e.getMessage(), e);
                 }
             }
-    }
-        // if(postDto.getCategoryName()!=null && !postDto.getCategoryName().isEmpty()){
-        //     Category category = categoryRepository.findByName(postDto.getCategoryName()).orElseThrow(
-        //     () -> new IllegalArgumentException("category not found"));
-        //     existingPost.setCategory(category);
-        // }
+        }
+        if (postDto.getCategories() != null && !postDto.getCategories().isEmpty()) {
+            List<Category> categories = postDto.getCategories().stream()
+                .map(categoryDto -> categoryRepository.findById(categoryDto.getCategoryId())
+                    .orElseThrow(() -> new IllegalArgumentException("Category not found: " + categoryDto.getCategoryId())))
+                .collect(Collectors.toList());
+            existingPost.setCategories(categories);
+        }
         Post updatedPost = postRepository.save(existingPost);
         return modelMapper.map(updatedPost,PostDto.class);
     }

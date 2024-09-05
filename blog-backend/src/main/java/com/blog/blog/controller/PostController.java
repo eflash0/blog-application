@@ -54,8 +54,9 @@ public class PostController {
     }
 
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto,
-        @RequestPart("file") MultipartFile imageFile,@PathVariable Long id){
+    public ResponseEntity<PostDto> updatePost(@RequestPart("post") PostDto postDto,
+    @RequestPart(value = "file", required = false) MultipartFile imageFile,
+    @PathVariable Long id){
         PostDto post = postService.updatePost(postDto,imageFile, id);
         return ResponseEntity.ok(post);
     }
