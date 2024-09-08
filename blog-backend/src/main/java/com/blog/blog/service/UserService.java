@@ -2,14 +2,22 @@ package com.blog.blog.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.io.IOException;
 
 import com.blog.blog.dto.PostDto;
 import com.blog.blog.dto.SignupRequest;
@@ -18,6 +26,8 @@ import com.blog.blog.entity.Post;
 import com.blog.blog.entity.Role;
 import com.blog.blog.entity.User;
 import com.blog.blog.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class UserService implements UserDetailsService{
@@ -29,6 +39,9 @@ public class UserService implements UserDetailsService{
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -76,4 +89,30 @@ public class UserService implements UserDetailsService{
         new IllegalArgumentException("user not found"));
         return modelMapper.map(user,UserDto.class);
     }
+
+    @Transactional
+    public UserDto changeProfilePicture(Long idUser, MultipartFile imageFile) {
+        User user = userRepository.findById(idUser).orElseThrow(() ->
+            new IllegalArgumentException("user not found"));
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String fileName = imageFile.getOriginalFilename();
+            if (fileName != null && uploadDir != null) {
+                Path uploadDirectory = Paths.get(uploadDir);
+                String uniqueFileName = UUID.randomUUID().toString() + "_" + fileName;
+                Path filePath = uploadDirectory.resolve(fileName);
+
+                try {
+                    Files.createDirectories(uploadDirectory);
+                    Files.write(filePath, imageFile.getBytes()); 
+                    user.setImage(fileName);
+                    userRepository.save(user);
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to store file: " + e.getMessage(), e);
+                }
+            }
+        }
+        return modelMapper.map(user, UserDto.class);
+    }
+
 }

@@ -53,6 +53,7 @@ public class User implements UserDetails{
     List<Post> posts = new ArrayList<>();
     @OneToMany(mappedBy = "author",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Comment> comments = new ArrayList<>();
+    private String image;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;

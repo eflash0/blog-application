@@ -19,6 +19,7 @@ public class UserDto {
     private String email;
     private String password;
     private Role role;
+    private String image;
     public UserDto(String username, String email, String password) {
         this.username = username;
         this.email = email;

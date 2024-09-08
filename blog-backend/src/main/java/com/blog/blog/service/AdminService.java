@@ -40,6 +40,22 @@ public class AdminService {
         return modelMapper.map(savedUser,UserDto.class);
     }
 
+    public UserDto addUser(UserDto userDto){
+        Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
+        if(existingUser.isPresent()){
+            throw new IllegalArgumentException("the username already exists");
+        }
+        existingUser = userRepository.findByEmail(userDto.getEmail());
+        if(existingUser.isPresent()){
+            throw new IllegalArgumentException("the email already exists");
+        }
+        User user = modelMapper.map(userDto,User.class);
+        user.setRole(Role.USER);
+        user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
+        User savedUser = userRepository.save(user);
+        return modelMapper.map(savedUser,UserDto.class);
+    }
+
     public List<UserDto> getAdmins(){
         List<User> admins = userRepository.getUsersByRole(Role.ADMIN);
         return admins.stream().map(admin -> modelMapper
@@ -60,9 +76,12 @@ public class AdminService {
         if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
             existingUser.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         }
+        if (userDto.getEmail() != null && !userDto.getEmail().isEmpty()) {
+            existingUser.setEmail(userDto.getEmail());
+        }
         if (userDto.getRole() != null) {
             try {
-                Role role = userDto.getRole();
+                Role role = Role.valueOf(userDto.getRole().toString().toUpperCase());
                 existingUser.setRole(role);
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException("Invalid role: " + userDto.getRole());

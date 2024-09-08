@@ -21,10 +21,16 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @PostMapping
+    @PostMapping("/addAdmins")
     public ResponseEntity<UserDto> addAdmin(@RequestBody UserDto userDto){
         UserDto admin = adminService.addAdmin(userDto);
         return ResponseEntity.ok(admin);
+    }
+
+    @PostMapping("/addUser")
+    public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto){
+        UserDto user = adminService.addUser(userDto);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/getAdmins")
@@ -33,27 +39,24 @@ public class AdminController {
         return ResponseEntity.ok(admins);
     }
 
+    
+
     @GetMapping("/getUsers")
     public ResponseEntity<List<UserDto>> getUsers(){
         List<UserDto> admins = adminService.getUsers();
         return ResponseEntity.ok(admins);
     }
 
-    @PutMapping("/getAdmins/{id}")
-    public ResponseEntity<UserDto> updateAdmin(@RequestBody UserDto admin,@PathVariable Long id){
-        UserDto updatedAdmin = adminService.updateUser(admin, id);
-        return ResponseEntity.ok(updatedAdmin);
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto user,@PathVariable Long id){
+        UserDto updatedUser = adminService.updateUser(user, id);
+        return ResponseEntity.ok(updatedUser);
     }
 
-    @DeleteMapping("/getAdmins/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAdmin(@PathVariable Long id){
         adminService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/getUsers/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
-        adminService.deleteUser(id);
-        return ResponseEntity.noContent().build();
-    }    
 }
