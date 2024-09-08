@@ -32,10 +32,26 @@
     border-color: var(--border);
   }
 
-  body {
+
+  html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
     color: var(--foreground);
     font-family: var(--font-body);
-  }
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex-grow: 1;
+}
+
+app-footer {
+    margin-top: auto;
+}
 
 
   h1, h2, h3, h4, h5, h6 {

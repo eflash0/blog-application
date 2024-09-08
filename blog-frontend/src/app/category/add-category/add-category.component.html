@@ -1,1 +1,17 @@
-<p>add-category works!</p>
+<div class="dialog-content">
+    <div class="bg-white p-8 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Add Category</h2>
+      <form (ngSubmit)="addCategory()" #categoryForm="ngForm">
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 font-medium mb-2">category</label>
+          <input [(ngModel)]="category.name" type="text" id="name" name="name" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 input-blue" required>
+        </div>
+        <div class="flex justify-between items-center">
+          <button type="submit" class="btn-pink text-white px-4 py-2 rounded-lg">Add Category</button>
+          <button type="button" (click)="onCancel()" class="text-blue-500 hover:underline">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  

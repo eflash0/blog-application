@@ -5,7 +5,7 @@
         <!-- Comment 1 -->
         <div *ngFor="let comment of comments" class="comment border-b border-muted p-4">
             <div class="flex items-center mb-2">
-                <img src="https://www.w3schools.com/w3images/avatar2.png" alt="Commenter" class="w-8 h-8 rounded-full border mr-2" />
+                <img [src]="'http://localhost:8082/images/'+comment.author.image" alt="Commenter" class="w-8 h-8 rounded-full border mr-2" />
                 <span class="font-semibold">{{comment.author.username}}</span>
                 <span class="text-sm text-muted-foreground ml-2">{{ comment.createdAt | date:'MMMM d, yyyy' }}</span>
                 <div *ngIf="isAdmin || comment.author.username === username" class="ml-auto flex gap-2">

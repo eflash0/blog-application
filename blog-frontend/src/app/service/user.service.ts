@@ -26,5 +26,15 @@ export class UserService {
     const postsUrl = `${this.url}/${id}/posts`;
     return this.http.get<any>(postsUrl,{ headers });
   }
+
+  changeProfilePicture(file : File | null = null,id : number) : Observable<any>{
+    const picUrl = `${this.url}/changePicture/${id}`;
+    const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
+    const formData : FormData = new FormData();
+    if(file){
+      formData.append('file',file);
+    }
+    return this.http.put<any>(picUrl, formData,{ headers })
+  }
 }
 

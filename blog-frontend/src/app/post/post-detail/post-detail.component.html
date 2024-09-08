@@ -24,7 +24,7 @@
                 </div>
                 <div class="flex items-center gap-2 text-sm text-muted-foreground">
                     <div>
-                        <img (click)="userProfile(post.author.userId)" src="https://www.w3schools.com/w3images/nature.jpg" alt="Author" class="w-6 h-6 rounded-full border" />
+                        <img (click)="userProfile(post.author.userId)" [src]="'http://localhost:8082/images/'+post.author.image" alt="Author" class="w-6 h-6 rounded-full border" />
                     </div>
                     <a class="text-blue-600 text-sm cursor-pointer" (click)="userProfile(post.author.userId)">{{post.author.username}}</a>
                     <span>•</span>

@@ -16,13 +16,13 @@ export class CategoryService {
 
   addCategory(category : any) : Observable<any>{
     const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
-    return this.http.post<any>(category,{ headers });
+    return this.http.post<any>(this.url,category,{ headers });
   }
 
   updateCategory(category : any,id : number){
     const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
     const updateUrl = `${this.url}/${id}`;
-    return this.http.post<any>(updateUrl,{ headers });
+    return this.http.put<any>(updateUrl,category,{ headers });
   }
 
   deleteCategory(id:number) : Observable<any>{

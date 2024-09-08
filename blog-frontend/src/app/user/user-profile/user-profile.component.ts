@@ -5,7 +5,8 @@ import { UserService } from '../../service/user.service';
 import { AuthService } from '../../service/auth.service';
 import { CommonModule } from '@angular/common';
 import { TruncatePipe } from '../../truncate.pipe';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PostService } from '../../service/post.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -21,9 +22,11 @@ export class UserProfileComponent implements OnInit {
   posts : any[] = [];
   postsPerPage : number = 6;
   currentPage : number = 1;
-  paginatedPosts : any
+  paginatedPosts : any[] = [];
+  selectedFile: File | null = null;
+
   constructor(private userService : UserService,private authService : AuthService,
-    private route : ActivatedRoute
+    private route : ActivatedRoute, private router:Router
   ) { }
 
   ngOnInit(): void {
@@ -38,27 +41,23 @@ export class UserProfileComponent implements OnInit {
     );
 
     this.userService.getUserPosts(this.userId).subscribe(
-      response => { 
-        this.posts = response.map((post:any) => {
-          ({...post,
-            createAt : new Date(
-              post.createdAt[0],  
-              post.createdAt[1] - 1,  
-              post.createdAt[2], 
-              post.createdAt[3],  
-              post.createdAt[4],
-              post.createdAt[5],
-              post.createdAt[6] / 1000000
-            )
-          })
-        });
+      response => {this.posts = response.map((post:any) => ({
+          ...post,
+          createdAt: new Date(
+            post.createdAt[0],  
+            post.createdAt[1] - 1,  
+            post.createdAt[2], 
+            post.createdAt[3],  
+            post.createdAt[4],
+            post.createdAt[5],
+            post.createdAt[6] / 1000000
+          )
+        }));
+        this.paginatedPosts = [...this.posts];
+        this.updatePaginatedPosts();
       },
-      error => {
-        console.error('error fetching posts',error);
-      }
+      error => {console.error('error fetching posts',error);}
     );
-    console.log(this.posts.length);
-    
   }
 
   getTotalPages(): number[] {
@@ -93,12 +92,21 @@ export class UserProfileComponent implements OnInit {
   }
 
   postDetails(id : number){
-
+    this.router.navigate(['/posts',id]);
   }
 
-  act(){
-    console.log(this.userId);
-    
-    console.log(this.posts[0]);
+  onFileSelected(event : any){
+    this.selectedFile = event.target.files[0];
+    if(this.selectedFile){
+      this.userService.changeProfilePicture(this.selectedFile,this.userId).subscribe(
+        response => {
+          this.ngOnInit();
+        },
+        error => {
+          console.error('error changing profile picture',error);
+          
+        }
+      );
+    }
   }
 }

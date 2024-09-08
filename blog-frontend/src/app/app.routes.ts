@@ -8,6 +8,8 @@ import { CreatePostComponent } from './post/create-post/create-post.component';
 import { CommentSectionComponent } from './comment/comment-section/comment-section.component';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { UpdatePostComponent } from './post/update-post/update-post.component';
+import { GetCategoriesComponent } from './category/get-categories/get-categories.component';
+import { GetUsersComponent } from './user/get-users/get-users.component';
 
 export const routes: Routes = [
     {path : 'login', component : LoginComponent},
@@ -18,5 +20,8 @@ export const routes: Routes = [
     {path : 'posts/:id', component : PostDetailComponent},
     {path : 'updatePost/:id', component : UpdatePostComponent},
     {path : 'users/:id', component : UserProfileComponent},
+    {path : 'users/:id', component : UserProfileComponent},
+    {path : 'categories', component : GetCategoriesComponent},
+    {path : 'users', component : GetUsersComponent},
     {path : 'comment', component : CommentSectionComponent}
 ];
