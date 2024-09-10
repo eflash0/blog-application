@@ -1,9 +1,9 @@
 @import url(https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css);
 .btn-pink {
-    background-color: #EEC3E8;
+  background-color: #EEC3E8;
 }
 .btn-pink:hover {
-    background-color: #fcaaf1;
+  background-color: #fcaaf1;
 }
 .input-blue:focus {
     border-color: #428bca;
@@ -13,21 +13,21 @@
 :host {
     display: block;
     height: 100%;
-    margin: 0;
-    padding: 0;
+    margin: 0; /* Ensure no margin */
+    padding: 0; /* Ensure no padding */
   }
   
   .dialog-content {
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 0;
-    margin: 0;
+    padding: 0; /* Remove internal padding */
+    margin: 0; /* Remove internal margin */
   }
   
   .bg-white {
     height: 100%;
-    overflow: auto; 
+    overflow: auto; /* Allows for scrolling within the dialog content if needed */
   }
   
   

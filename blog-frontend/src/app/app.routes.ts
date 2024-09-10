@@ -10,6 +10,8 @@ import { UserProfileComponent } from './user/user-profile/user-profile.component
 import { UpdatePostComponent } from './post/update-post/update-post.component';
 import { GetCategoriesComponent } from './category/get-categories/get-categories.component';
 import { GetUsersComponent } from './user/get-users/get-users.component';
+import { GetAdminsComponent } from './admin/get-admins/get-admins.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 export const routes: Routes = [
     {path : 'login', component : LoginComponent},
@@ -23,5 +25,7 @@ export const routes: Routes = [
     {path : 'users/:id', component : UserProfileComponent},
     {path : 'categories', component : GetCategoriesComponent},
     {path : 'users', component : GetUsersComponent},
+    {path : 'admins', component : GetAdminsComponent},
+    {path : 'dashboard', component : DashboardComponent},
     {path : 'comment', component : CommentSectionComponent}
 ];

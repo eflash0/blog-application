@@ -14,9 +14,7 @@
     <div class="bg-white p-4 rounded-lg shadow-md mb-4">
       <h2 class="text-xl font-semibold mb-3">Tags</h2>
       <div class="flex flex-wrap gap-2">
-        <a href="/tag/programming" class="bg-blue-100 text-blue-500 py-1 px-2 rounded text-sm hover:bg-blue-200">Programming</a>
-        <a href="/tag/education" class="bg-blue-100 text-blue-500 py-1 px-2 rounded text-sm hover:bg-blue-200">Education</a>
-        <a href="/tag/innovation" class="bg-blue-100 text-blue-500 py-1 px-2 rounded text-sm hover:bg-blue-200">Innovation</a>
+        <a *ngFor="let category of categories" (click)="onCategoryClick(category.name)" class="bg-blue-100 text-blue-500 py-1 px-2 rounded text-sm hover:bg-blue-200">{{category.name}}</a>
       </div>
     </div>
   

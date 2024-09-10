@@ -1,0 +1,37 @@
+@import url(https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css);
+.btn-pink {
+    background-color: #EEC3E8;
+}
+.btn-pink:hover {
+    background-color: #fcaaf1;
+}
+.btn-red {
+    background-color: #e3342f;
+}
+.btn-red:hover {
+    background-color: #cc1f1a;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Set body as a flex container */
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Ensure the content takes up the remaining space */
+.container {
+    flex-grow: 1;
+}  
+
+body{
+    background-color: #F0F9FC;
+}
+
+/* Footer stays at the bottom */
+app-footer {
+    margin-top: auto;
+}

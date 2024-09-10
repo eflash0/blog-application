@@ -1,0 +1,35 @@
+<!-- admin-dashboard.component.html -->
+<div class="min-h-screen bg-gray-100">
+    <app-navigation-bar></app-navigation-bar>
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Admin Dashboard</h1>
+        
+        <!-- Grid for Management Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Manage Users -->
+            <div class="p-6 bg-white rounded-lg shadow-lg flex flex-col items-center">
+                <h2 class="text-xl font-bold mb-4 text-gray-700">Manage Users</h2>
+                <button class="btn-blue w-full text-white px-4 py-2 rounded-lg" (click)="navigateToUsers()">
+                    Go to Users
+                </button>
+            </div>
+
+            <!-- Manage Admins -->
+            <div class="p-6 bg-white rounded-lg shadow-lg flex flex-col items-center">
+                <h2 class="text-xl font-bold mb-4 text-gray-700">Manage Admins</h2>
+                <button class="btn-green w-full text-white px-4 py-2 rounded-lg" (click)="navigateToAdmins()">
+                    Go to Admins
+                </button>
+            </div>
+
+            <!-- Manage Tags -->
+            <div class="p-6 bg-white rounded-lg shadow-lg flex flex-col items-center">
+                <h2 class="text-xl font-bold mb-4 text-gray-700">Manage Tags</h2>
+                <button class="btn-pink w-full text-white px-4 py-2 rounded-lg" (click)="navigateToTags()">
+                    Go to Tags
+                </button>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

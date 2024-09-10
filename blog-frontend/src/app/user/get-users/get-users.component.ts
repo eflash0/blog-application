@@ -46,7 +46,9 @@ export class GetUsersComponent implements OnInit {
   searchUsers(event : Event){
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
     this.filteredUsers = this.users.filter((user : any) =>{
-      return (user.username.toLowerCase().includes(searchTerm));
+      return (user.username.toLowerCase().includes(searchTerm) ||
+      user.email.toLowerCase().includes(searchTerm)
+    );
     });
   }
 
