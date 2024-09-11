@@ -93,7 +93,12 @@ Math: any;
     this.updatePaginatedPosts();
   }
 
-  onCategoryClick(category: string) {
+  onCategoryClick(category: string) : void {
+    if(category === 'All'){
+      this.filteredPosts = this.posts;
+      this.updatePaginatedPosts();
+      return;
+    }
     this.postService.getPostsByCategory(category).subscribe(
       response => {
         this.filteredPosts = response.map((post:any) =>({
@@ -117,5 +122,9 @@ Math: any;
 
   userProfile(userId : number) : void{
     this.router.navigate(['/users',userId]);
+  }
+
+  createPost(){
+    this.router.navigate(['/create-post']);
   }
 }

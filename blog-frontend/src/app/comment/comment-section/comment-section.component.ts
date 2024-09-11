@@ -8,11 +8,12 @@ import { Comment } from '../../model/comment';
 import { AuthService } from '../../service/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-comment-section',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule,CommonModule,RouterModule],
   templateUrl: './comment-section.component.html',
   styleUrl: './comment-section.component.css'
 })

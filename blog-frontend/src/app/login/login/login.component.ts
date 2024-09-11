@@ -21,8 +21,8 @@ export class LoginComponent {
     login() : void{
       this.authService.login(this.loginRequest).subscribe(
         response => {
-          console.log('login with success');
           localStorage.setItem('token',response.token);
+          this.router.navigate(['/home']);
         },
         error => {console.error('login failed',error);}
       );

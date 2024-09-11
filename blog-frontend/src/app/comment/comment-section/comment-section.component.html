@@ -6,7 +6,9 @@
         <div *ngFor="let comment of comments" class="comment border-b border-muted p-4">
             <div class="flex items-center mb-2">
                 <img [src]="'http://localhost:8082/images/'+comment.author.image" alt="Commenter" class="w-8 h-8 rounded-full border mr-2" />
-                <span class="font-semibold">{{comment.author.username}}</span>
+                <a [routerLink]="['/users', comment.author.userId]" class="font-semibold">
+                    {{ comment.author.username }}
+                </a>
                 <span class="text-sm text-muted-foreground ml-2">{{ comment.createdAt | date:'MMMM d, yyyy' }}</span>
                 <div *ngIf="isAdmin || comment.author.username === username" class="ml-auto flex gap-2">
                     <button (click)="modifyComment(comment)" class="text-blue-500 hover:underline">
@@ -50,8 +52,10 @@
             <div *ngIf="comment.showReplies" class="replies mt-4">
                 <div *ngFor="let reply of comment.replies" class="reply border-l border-muted pl-4 ml-4">
                     <div class="flex items-center mb-2">
-                        <img src="https://www.w3schools.com/w3images/avatar5.png" alt="Replier" class="w-8 h-8 rounded-full border mr-2" />
-                        <span class="font-semibold">{{ reply.author.username }}</span>
+                        <img [src]="'http://localhost:8082/images/'+reply.author.image" alt="Replier" class="w-8 h-8 rounded-full border mr-2" />
+                        <a [routerLink]="['/users', reply.author.userId]" class="font-semibold">
+                            {{ reply.author.username }}
+                        </a>
                         <span class="text-sm text-muted-foreground ml-2">{{ reply.createdAt | date:'MMMM d, yyyy' }}</span>
                         <div class="ml-auto flex gap-2">
                             <button (click)="modifyComment(reply)" class="text-blue-500 hover:underline">

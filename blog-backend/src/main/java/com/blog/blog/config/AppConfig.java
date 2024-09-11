@@ -17,12 +17,6 @@ public class AppConfig {
     public CommandLineRunner commandLineRunner(AdminService adminService,UserService userService
     ,CategoryService categoryService){
         return args ->{
-            UserDto userDto = new UserDto("abdo","fpoew@ade.com","fr");
-            adminService.addAdmin(userDto);
-            Category category = new Category();
-            category.setName("it");
-            Category savedCategory = categoryService.addCategory(category);
-            
         };
     }
 }

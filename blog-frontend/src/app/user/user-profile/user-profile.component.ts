@@ -32,7 +32,7 @@ export class UserProfileComponent implements OnInit {
   ngOnInit(): void {
     this.userId = +this.route.snapshot.paramMap.get('id')!;
     this.username = this.authService.extractUsername();
-    this.userService.findUserByUsername(this.username).subscribe(
+    this.userService.findUserById(this.userId).subscribe(
       response => {
         this.user = response;
         console.log(this.user.userId);

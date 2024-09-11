@@ -1,0 +1,65 @@
+<div class="min-h-screen flex flex-col">
+    <!-- Navigation Bar -->
+    <app-navigation-bar></app-navigation-bar>
+  
+    <!-- Hero Section -->
+    <section class="bg-cover bg-center h-96 flex items-center justify-center text-black" style="background-image: url('/assets/blog-banner.jpg')">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold mb-4">Welcome to My Blog</h1>
+        <p class="text-xl mb-4">Explore latest articles, categories, and more</p>
+        <button class="btn-blue px-6 py-2 text-white rounded-lg" (click)="explorePosts()">
+          Explore Posts
+        </button>
+      </div>
+    </section>
+  
+    <!-- Main Content Section -->
+    <main class="flex-grow bg-gray-100 py-10">
+      <div class="container mx-auto px-4">
+        <!-- Featured Categories -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-6 text-gray-800">Featured Categories</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div *ngFor="let category of categories" class="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                <h3 class="text-xl font-semibold text-gray-800 mb-2">{{category.name}}</h3>
+                <button class="btn-blue mt-4 px-4 py-2 text-white rounded-lg" (click)="viewCategoryPosts(category.id)">
+                  View Posts
+                </button>
+              </div>
+            </div>
+          </section>
+          
+  
+        <!-- Latest Posts -->
+        <section class="mb-12">
+          <h2 class="text-3xl font-bold mb-6 text-gray-800">Latest Posts</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div *ngFor="let post of latestPosts" class="bg-white rounded-lg overflow-hidden shadow-md">
+              <a class="block">
+                <img [src]="'http://localhost:8082/images/' + post.imagePath" alt="Blog post image" class="w-full h-48 object-cover transition-opacity hover:opacity-80" />
+              </a>
+              <div class="p-4">
+                <div class="flex justify-between mb-2">
+                  <a class="text-blue-600 text-sm cursor-pointer" (click)="userProfile(post.author.userId)">{{post.author.username}}</a>
+                  <time [attr.datetime]="post.createdAt | date:'yyyy-MM-ddTHH:mm:ss'" class="text-gray-600 text-sm">
+                    {{ post.createdAt | date:'MMMM d, yyyy' }}
+                  </time>
+                </div>
+                <a class="block text-xl font-bold mb-2 text-gray-800 cursor-pointer">{{post.title}}</a>
+                <p class="text-gray-600 mb-4">{{post.content | truncate:10}}</p>
+                <a class="inline-flex items-center text-blue-600 hover:text-blue-400 cursor-pointer" (click)="postDetails(post.postId)">
+                  Read more
+                  <svg class="h-4 w-4 ml-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/>
+                    <path d="m12 5 7 7-7 7"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  
+    <app-footer></app-footer>
+  </div>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FooterComponent } from "../footer/footer.component";
 import { NavigationBarComponent } from "../navigation-bar/navigation-bar.component";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,16 +11,17 @@ import { NavigationBarComponent } from "../navigation-bar/navigation-bar.compone
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
-
+  constructor(private router:Router){}
   
-navigateToTags() {
-throw new Error('Method not implemented.');
-}
-navigateToUsers() {
-throw new Error('Method not implemented.');
-}
-navigateToAdmins() {
-throw new Error('Method not implemented.');
-}
+  navigateToCategories() {
+    this.router.navigate(['/categories']);
+  }
+  navigateToUsers() {
+    this.router.navigate(['/users']);
+  
+  }
+  navigateToAdmins() {
+    this.router.navigate(['/admins']);
+  }
 
 }

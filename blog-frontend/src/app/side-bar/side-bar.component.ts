@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CategoryService } from '../service/category.service';
-import { PostService } from '../service/post.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,7 +16,7 @@ export class SideBarComponent implements OnInit {
   @Output() search = new EventEmitter<string>();
   @Output() categorySelected = new EventEmitter<string>();
   categories : any[] = []
-  constructor(private categoryService:CategoryService,private postService:PostService){}
+  constructor(private categoryService:CategoryService,private router:Router){}
   ngOnInit(): void {
       this.categoryService.getCategories().subscribe(
         response => {this.categories = response},
@@ -32,4 +32,5 @@ export class SideBarComponent implements OnInit {
   onCategoryClick(category:string){
     this.categorySelected.emit(category);
   }
+
 }

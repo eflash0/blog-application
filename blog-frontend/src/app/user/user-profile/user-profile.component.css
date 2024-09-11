@@ -58,5 +58,7 @@ app-footer {
     font-family: var(--font-heading);
   }
 
-  
+  .bg-main {
+    @apply bg-[#F0F9FC];
+  }
 }

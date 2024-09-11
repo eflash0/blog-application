@@ -12,20 +12,24 @@ import { GetCategoriesComponent } from './category/get-categories/get-categories
 import { GetUsersComponent } from './user/get-users/get-users.component';
 import { GetAdminsComponent } from './admin/get-admins/get-admins.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { adminGuard } from './guard/admin.guard';
+import { authGuard } from './guard/auth.guard';
+import { HomeComponent } from './home/home.component';
 
 export const routes: Routes = [
     {path : 'login', component : LoginComponent},
     {path : 'signup', component : SignupComponent},
-    {path : 'get-posts', component : GetPostsComponent},
-    {path : 'navigation-bar', component : NavigationBarComponent},
-    {path : 'create-post', component : CreatePostComponent},
-    {path : 'posts/:id', component : PostDetailComponent},
-    {path : 'updatePost/:id', component : UpdatePostComponent},
-    {path : 'users/:id', component : UserProfileComponent},
-    {path : 'users/:id', component : UserProfileComponent},
-    {path : 'categories', component : GetCategoriesComponent},
-    {path : 'users', component : GetUsersComponent},
-    {path : 'admins', component : GetAdminsComponent},
-    {path : 'dashboard', component : DashboardComponent},
-    {path : 'comment', component : CommentSectionComponent}
+    {path : 'get-posts', component : GetPostsComponent,canActivate:[authGuard]},
+    {path : 'navigation-bar', component : NavigationBarComponent,canActivate:[authGuard]},
+    {path : 'create-post', component : CreatePostComponent,canActivate:[authGuard]},
+    {path : 'posts/:id', component : PostDetailComponent,canActivate:[authGuard]},
+    {path : 'updatePost/:id', component : UpdatePostComponent,canActivate:[authGuard]},
+    {path : 'users/:id', component : UserProfileComponent,canActivate:[authGuard]},
+    {path : 'users/:id', component : UserProfileComponent,canActivate:[authGuard]},
+    {path : 'categories', component : GetCategoriesComponent,canActivate:[authGuard,adminGuard]},
+    {path : 'users', component : GetUsersComponent,canActivate:[authGuard,adminGuard]},
+    {path : 'admins', component : GetAdminsComponent,canActivate:[authGuard,adminGuard]},
+    {path : 'dashboard', component : DashboardComponent,canActivate:[authGuard,adminGuard]},
+    {path : 'comment', component : CommentSectionComponent},
+    {path : 'home', component : HomeComponent}
 ];
