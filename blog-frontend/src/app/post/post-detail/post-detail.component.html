@@ -35,6 +35,19 @@
                         {{post.content}}
                     </p>
                 </div>
+
+                <!-- Categories Section -->
+                <div class="mt-6">
+                    <h2 class="text-lg font-semibold">Categories</h2>
+                    <div class="flex gap-2 mt-2">
+                        <span 
+                            *ngFor="let category of post.categories" 
+                            class="bg-gray-200 text-gray-800 px-3 py-1 rounded-full cursor-pointer hover:bg-gray-300"
+                            (click)="viewCategoryPosts(category.name)">
+                            {{category.name}}
+                        </span>
+                    </div>
+                </div>
             </div>
         </article>
         <app-comment-section *ngIf="post" [postId]="post.postId"></app-comment-section>

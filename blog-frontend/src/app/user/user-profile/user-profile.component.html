@@ -6,30 +6,46 @@
   <main class="flex-grow bg-main py-8 px-4">
     <div class="container mx-auto">
       <!-- User Info -->
-      <div class="mb-8 p-4 bg-blue-100 rounded-lg shadow-lg">
+      <div class="mb-8 p-6 bg-white border border-gray-300 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
         <div class="flex items-center">
-          <div class="relative inline-block">
-            <!-- Profile Image -->
+          
+          <!-- Profile Image with Circular Frame -->
+          <div class="relative">
             <img [src]="'http://localhost:8082/images/' + user?.image"
                  alt="User profile image"
-                 class="w-16 h-16 rounded-full mr-4 hover:opacity-75" />
-          
-            <!-- Edit Icon -->
-            <label for="fileInput" class="absolute bottom-0 right-0 bg-white rounded-full p-1 cursor-pointer hover:bg-gray-100">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 class="w-24 h-24 rounded-full border-2 border-gray-300 shadow-sm hover:opacity-90 transition-opacity duration-200 mr-6" />
+            
+            <!-- Edit Icon for Profile Image -->
+            <label *ngIf="user?.username === username" for="fileInput" class="absolute bottom-0 right-0 bg-gray-300 rounded-full p-2 cursor-pointer hover:bg-gray-200 transition-colors duration-200 shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
               </svg>
-              <!-- Hidden file input -->
-              <input *ngIf="user?.username === username" type="file" id="fileInput" (change)="onFileSelected($event)" style="display: none;" />
+              <!-- Hidden file input for profile image update -->
+              <input type="file" id="fileInput" (change)="onFileSelected($event)" class="hidden" />
             </label>
           </div>
           
+          <!-- User Info with Cleaner Layout -->
           <div class="ml-6">
-            <h2 class="text-xl font-bold text-gray-800">{{user?.username}}</h2>
-            <p class="text-gray-600">{{user?.email}}</p>
+            <h2 class="text-lg font-semibold text-gray-800">{{user?.username}}</h2>
+            <p class="text-gray-600 text-sm">{{user?.email}}</p>
           </div>
         </div>
+      
+        <!-- Simple Divider -->
+        <hr class="my-4 border-gray-500" />
+      
+        <!-- Action Buttons -->
+        <div class="flex space-x-4">
+          <button *ngIf="isAdmin || user?.username === username" (click)="editProfile()" class="px-4 py-2 btn-pink text-white rounded-lg shadow transition duration-200">
+            Edit Profile
+          </button>
+          <button *ngIf="isAdmin || user?.username === username" (click)="deleteProfile()" class="px-4 py-2 btn-red text-white rounded-lg shadow transition duration-200">
+            Delete Profile
+          </button>
+        </div>
       </div>
+      
 
       <!-- User Posts -->
       <ng-container *ngIf="paginatedPosts.length > 0; else noPostFound">

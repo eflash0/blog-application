@@ -61,4 +61,18 @@ app-footer {
   .bg-main {
     @apply bg-[#F0F9FC];
   }
+
+  .btn-pink {
+    background-color: #EEC3E8;
+  }
+  .btn-pink:hover {
+    background-color: #fcaaf1;
+  }
+
+  .btn-red {
+    background-color: #e3342f;
+  }
+  .btn-red:hover {
+    background-color: #cc1f1a;
+  }
 }

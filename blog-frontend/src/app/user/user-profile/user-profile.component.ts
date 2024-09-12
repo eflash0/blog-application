@@ -6,7 +6,12 @@ import { AuthService } from '../../service/auth.service';
 import { CommonModule } from '@angular/common';
 import { TruncatePipe } from '../../truncate.pipe';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PostService } from '../../service/post.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdateUserComponent } from '../update-user/update-user.component';
+import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
+import { AdminService } from '../../service/admin.service';
+import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBarModule
+
 
 @Component({
   selector: 'app-user-profile',
@@ -24,40 +29,47 @@ export class UserProfileComponent implements OnInit {
   currentPage : number = 1;
   paginatedPosts : any[] = [];
   selectedFile: File | null = null;
+  isAdmin = false;
 
   constructor(private userService : UserService,private authService : AuthService,
-    private route : ActivatedRoute, private router:Router
+    private route : ActivatedRoute, private router:Router, private dialog : MatDialog,
+    private adminService : AdminService, private snackBar : MatSnackBar
   ) { }
 
   ngOnInit(): void {
-    this.userId = +this.route.snapshot.paramMap.get('id')!;
-    this.username = this.authService.extractUsername();
-    this.userService.findUserById(this.userId).subscribe(
-      response => {
-        this.user = response;
-        console.log(this.user.userId);
-      },
-      error => {console.error('error fetching user',error);}
-    );
-
-    this.userService.getUserPosts(this.userId).subscribe(
-      response => {this.posts = response.map((post:any) => ({
-          ...post,
-          createdAt: new Date(
-            post.createdAt[0],  
-            post.createdAt[1] - 1,  
-            post.createdAt[2], 
-            post.createdAt[3],  
-            post.createdAt[4],
-            post.createdAt[5],
-            post.createdAt[6] / 1000000
-          )
-        }));
-        this.paginatedPosts = [...this.posts];
-        this.updatePaginatedPosts();
-      },
-      error => {console.error('error fetching posts',error);}
-    );
+    this.isAdmin = this.authService.isAdmin()
+    this.route.params.subscribe(params => {
+      this.userId = +params['id'];
+      this.username = this.authService.extractUsername(); 
+  
+      this.userService.findUserById(this.userId).subscribe(
+        response => {
+          this.user = response;
+          console.log(this.user.userId);
+        },
+        error => { console.error('error fetching user', error); }
+      );
+  
+      this.userService.getUserPosts(this.userId).subscribe(
+        response => {
+          this.posts = response.map((post: any) => ({
+            ...post,
+            createdAt: new Date(
+              post.createdAt[0],  
+              post.createdAt[1] - 1,  
+              post.createdAt[2], 
+              post.createdAt[3],  
+              post.createdAt[4],
+              post.createdAt[5],
+              post.createdAt[6] / 1000000
+            )
+          }));
+          this.paginatedPosts = [...this.posts];
+          this.updatePaginatedPosts();
+        },
+        error => { console.error('error fetching posts', error); }
+      );
+    });
   }
 
   getTotalPages(): number[] {
@@ -108,5 +120,38 @@ export class UserProfileComponent implements OnInit {
         }
       );
     }
+  }
+
+  editProfile(){
+    const dialogRef = this.dialog.open(UpdateUserComponent,{width:'400px',height:'400px',data : this.user});
+    dialogRef.afterClosed().subscribe(
+      reponse => {this.ngOnInit()},
+      error => {console.error('error fetching user',error);}
+    );
+  }
+
+  deleteProfile(){
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent,{data : 
+      {title : 'Delete Confirmation', content : 'Are you sure you want to delete your account?'}
+    });
+    dialogRef.afterClosed().subscribe(
+      result => {
+        if(result){
+          this.adminService.deleteUser(this.user.userId).subscribe(
+            response => {
+              this.authService.logout();
+              this.router.navigate(['/login']);
+              this.snackBar.open('Account deleted successfully' , 'Close' ,{
+                duration: 3000,
+                horizontalPosition: 'center',
+                verticalPosition: 'bottom',
+                panelClass: ['success-snackbar']
+              });
+            },
+            error => {console.error('error deleteting acount');}
+          );
+        }
+      }
+    );
   }
 }

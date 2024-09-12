@@ -7,14 +7,14 @@
       <div class="text-center">
         <h1 class="text-4xl font-bold mb-4">Welcome to My Blog</h1>
         <p class="text-xl mb-4">Explore latest articles, categories, and more</p>
-        <button class="btn-blue px-6 py-2 text-white rounded-lg" (click)="explorePosts()">
+        <button class="btn-pink px-6 py-2 text-white rounded-lg" (click)="explorePosts()">
           Explore Posts
         </button>
       </div>
     </section>
   
     <!-- Main Content Section -->
-    <main class="flex-grow bg-gray-100 py-10">
+    <main class="flex-grow bg-hero py-10">
       <div class="container mx-auto px-4">
         <!-- Featured Categories -->
         <section class="mb-12">
@@ -22,7 +22,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               <div *ngFor="let category of categories" class="p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
                 <h3 class="text-xl font-semibold text-gray-800 mb-2">{{category.name}}</h3>
-                <button class="btn-blue mt-4 px-4 py-2 text-white rounded-lg" (click)="viewCategoryPosts(category.id)">
+                <button class="btn-pink mt-4 px-4 py-2 text-white rounded-lg" (click)="viewCategoryPosts(category.name)">
                   View Posts
                 </button>
               </div>

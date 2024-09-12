@@ -76,4 +76,8 @@ export class PostDetailComponent implements OnInit {
   userProfile(id : number){
     this.router.navigate(['users',id])
   }
+
+  viewCategoryPosts(category : string){
+    this.router.navigate(['/get-posts'],{queryParams : {name:category}});
+  }
 }

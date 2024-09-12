@@ -14,13 +14,13 @@
             <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
             <input [(ngModel)]="user.email" type="email" id="email" name="email" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 input-blue" required>
         </div>
-        <div class="mb-4">
+        <div *ngIf(isAdmin) class="mb-4">
             <label for="role" class="block text-gray-700 font-medium mb-2">Role</label>
             <select [(ngModel)]="user.role"  id="role" name="role" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 input-blue" required>
               <option value="USER">User</option>
               <option value="ADMIN">Admin</option>
             </select>
-          </div>
+        </div>
         <div class="flex justify-between items-center">
           <button type="submit" class="btn-pink text-white px-4 py-2 rounded-lg">Update User</button>
           <button type="button" (click)="onCancel()" class="text-blue-500 hover:underline">Cancel</button>
