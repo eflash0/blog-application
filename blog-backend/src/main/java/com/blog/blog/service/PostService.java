@@ -11,8 +11,12 @@ import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.io.IOException;
 
+import org.springframework.data.domain.Pageable;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -139,6 +143,12 @@ public class PostService {
     public List<PostDto> findPostsByCategory(String categoryName){
         List<Post> posts = postRepository.findByCategories_Name(categoryName);
         return posts.stream().map(post -> modelMapper.map(post,PostDto.class)).toList();
+    }
+
+    public List<PostDto> findLatestPosts() {
+        Pageable pageable = PageRequest.of(0, 3); // Fetch the top 3 latest posts
+        List<Post> posts = postRepository.findLatestPosts(pageable);
+        return posts.stream().map(post -> modelMapper.map(post, PostDto.class)).toList();
     }
 
 }

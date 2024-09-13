@@ -73,5 +73,9 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
-
+    @GetMapping("/latestPosts")
+    public ResponseEntity<List<PostDto>> getLatestPosts(){
+        List<PostDto> posts = postService.findLatestPosts();
+        return ResponseEntity.ok(posts);
+    }
 }

@@ -27,6 +27,9 @@ export class CommentSectionComponent implements OnInit {
   editingMode : boolean = false;
   editedComment = {content : ''};
   reply = new Comment('');
+  showEmojiPicker: { [key: string]: boolean } = {};
+  emojis: string[] = ['😄', '😢', '😂', '❤️', '👍', '🔥', '🎉', '😎', '😡', '😍'];
+
 
   constructor(private commentService : CommentService,private postService : PostService,
     private authService : AuthService,public dialog : MatDialog
@@ -144,6 +147,7 @@ export class CommentSectionComponent implements OnInit {
   }
 
   toggleReplyForm(comment : any){
+    this.reply.content = '';
     comment.addReply = true;
   }
 
@@ -165,4 +169,26 @@ export class CommentSectionComponent implements OnInit {
       }
     );
   }
+
+  toggleEmojiPicker(type: string, item?: any) {
+    const key = type + (item ? item.commentId : '');
+    this.showEmojiPicker[key] = !this.showEmojiPicker[key];
+  }
+
+  addEmoji(emoji: string, type: string, item?: any) {
+    const key = type + (item ? item.commentId : '');
+    if (type === 'main') {
+      this.comment.content += emoji;
+    } 
+    else if (type === 'reply') {
+        this.reply.content += emoji;
+    } 
+    else {
+      if (this.editedComment) {
+        this.editedComment.content += emoji;
+      }
+    }
+    this.showEmojiPicker[key] = false; // Hide picker after selecting emoji
+  }
+  
 }

@@ -6,7 +6,7 @@ import { NavigationBarComponent } from "../../navigation-bar/navigation-bar.comp
 import { FooterComponent } from "../../footer/footer.component";
 import { PostService } from '../../service/post.service';
 import { UserService } from '../../service/user.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TruncatePipe } from "../../truncate.pipe";
 @Component({
   selector: 'app-get-posts',
@@ -22,8 +22,9 @@ export class GetPostsComponent implements OnInit {
   postsNumbers : number = 0;
   postsPerPage : number = 6;
   currentPage : number = 1;
-Math: any;
-  constructor(private postService : PostService,private userService : UserService,private router:Router) {}
+  constructor(private postService : PostService,private userService : UserService,private router:Router,
+    private route : ActivatedRoute
+  ) {}
   
   ngOnInit(): void {
       this.postService.getPosts().subscribe(
@@ -44,6 +45,10 @@ Math: any;
         },
         error => {console.error('error fetching posts',error);}
       );
+      this.route.queryParams.subscribe(params => {
+        const category = params['name'] || 'All'; 
+        this.onCategoryClick(category); 
+      });
   }
 
   updatePaginatedPosts():void{

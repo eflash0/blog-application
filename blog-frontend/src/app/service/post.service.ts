@@ -61,4 +61,11 @@ export class PostService {
     const byCategoryUrl = `${this.url}/byCategory?category=${category}`;
     return this.http.get<any>(byCategoryUrl,{ /*params ,*/ headers });
   }
+
+  getLatestPosts() : Observable<any>{
+    const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
+    // const params = new HttpParams().set('category' , category);
+    const latestPosts = `${this.url}/latestPosts`;
+    return this.http.get<any>(latestPosts,{ /*params ,*/ headers });
+  }
 }

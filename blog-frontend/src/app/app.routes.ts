@@ -15,6 +15,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { adminGuard } from './guard/admin.guard';
 import { authGuard } from './guard/auth.guard';
 import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
 
 export const routes: Routes = [
     {path : 'login', component : LoginComponent},
@@ -31,5 +33,7 @@ export const routes: Routes = [
     {path : 'admins', component : GetAdminsComponent,canActivate:[authGuard,adminGuard]},
     {path : 'dashboard', component : DashboardComponent,canActivate:[authGuard,adminGuard]},
     {path : 'comment', component : CommentSectionComponent},
+    {path : 'about', component : AboutComponent},
+    {path : 'contact', component : ContactComponent},
     {path : 'home', component : HomeComponent}
 ];

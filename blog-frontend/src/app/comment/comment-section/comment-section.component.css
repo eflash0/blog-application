@@ -46,3 +46,31 @@
 
   
 }
+.comment-form {
+  position: relative; /* Container for absolute positioning of emoji button */
+}
+
+.emoji-picker {
+  position: absolute;
+  top: 100%; /* Position below the textarea */
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  display: grid; /* Use grid layout */
+  grid-template-columns: repeat(5, auto); /* Display 5 emojis per row */
+  gap: 5px; /* Space between emojis */
+  max-height: 200px; /* Set a max-height for the picker */
+  overflow-y: auto; /* Enable vertical scrolling if content exceeds max-height */
+  z-index: 10;
+}
+
+.emoji-picker span {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+textarea {
+  padding-left: 2.5rem; /* Ensure there's space for the emoji button */
+}

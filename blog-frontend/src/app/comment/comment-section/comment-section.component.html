@@ -2,85 +2,123 @@
 <section class="bg-pastel-cyan comments-section mt-8">
     <h2 class="text-xl font-bold mb-4">Comments</h2>
     <div class="comments-list mb-4">
-        <!-- Comment 1 -->
-        <div *ngFor="let comment of comments" class="comment border-b border-muted p-4">
-            <div class="flex items-center mb-2">
-                <img [src]="'http://localhost:8082/images/'+comment.author.image" alt="Commenter" class="w-8 h-8 rounded-full border mr-2" />
-                <a [routerLink]="['/users', comment.author.userId]" class="font-semibold">
-                    {{ comment.author.username }}
-                </a>
-                <span class="text-sm text-muted-foreground ml-2">{{ comment.createdAt | date:'MMMM d, yyyy' }}</span>
-                <div *ngIf="isAdmin || comment.author.username === username" class="ml-auto flex gap-2">
-                    <button (click)="modifyComment(comment)" class="text-blue-500 hover:underline">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button (click)="deleteComment(comment.commentId)" *ngIf="isAdmin || comment.author.username === username" class="text-red-500 hover:underline">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+      <!-- Comment 1 -->
+      <div *ngFor="let comment of comments" class="comment border-b border-muted p-4">
+        <div class="flex items-center mb-2">
+          <img [src]="'http://localhost:8082/images/'+comment.author.image" alt="Commenter" class="w-8 h-8 rounded-full border mr-2" />
+          <a [routerLink]="['/users', comment.author.userId]" class="font-semibold">
+            {{ comment.author.username }}
+          </a>
+          <span class="text-sm text-muted-foreground ml-2">{{ comment.createdAt | date:'MMMM d, yyyy' }}</span>
+          <div *ngIf="isAdmin || comment.author.username === username" class="ml-auto flex gap-2">
+            <button (click)="modifyComment(comment)" class="text-blue-500 hover:underline">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button (click)="deleteComment(comment.commentId)" *ngIf="isAdmin || comment.author.username === username" class="text-red-500 hover:underline">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+  
+        <!-- Edit Mode -->
+        <div *ngIf="comment.isEditing; else viewMode" class="relative">
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+            <button type="button" (click)="toggleEmojiPicker('comment', comment)" class="text-xl bg-transparent border-none cursor-pointer">
+              😊
+            </button>
+            <div class="emoji-picker" *ngIf="showEmojiPicker['comment' + comment.commentId]">
+              <span *ngFor="let emoji of emojis" (click)="addEmoji(emoji, 'comment', comment)" class="cursor-pointer">{{ emoji }}</span>
             </div>
-
-            <!-- Edit Mode -->
-            <div *ngIf="comment.isEditing; else viewMode">
-                <textarea [(ngModel)]="editedComment.content" rows="3" class="w-full p-2 border border-muted rounded mb-2"></textarea>
-                <button (click)="saveComment(comment)" class="bg-pastel-rose text-white px-4 py-2 hover-rose rounded">Save</button>
-                <button (click)="cancelEdit(comment)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-gray-600 hover:text-white">Cancel</button>            
+          </div>
+          <textarea [(ngModel)]="editedComment.content" rows="3" class="w-full p-2 border border-muted rounded mb-2 pl-12"></textarea>
+          <button (click)="saveComment(comment)" class="bg-pastel-rose text-white px-4 py-2 hover-rose rounded">Save</button>
+          <button (click)="cancelEdit(comment)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-gray-600 hover:text-white">Cancel</button>            
+        </div>
+        <!-- View Mode -->
+        <ng-template #viewMode>
+          <p>{{comment.content}}</p>
+        </ng-template>
+  
+        <!-- Reply Button -->
+        <div class="mt-4">
+          <button (click)="toggleReplies(comment)" class="text-blue-500 hover:underline mt-2">
+            {{ comment.showReplies ? 'Hide Replies' : 'Show Replies' }}
+          </button>
+          <button (click)="toggleReplyForm(comment)" class="text-blue-500 hover:underline ml-4">
+            Reply
+          </button>
+        </div>
+  
+        <!-- Reply Form -->
+        <div *ngIf="comment.addReply" class="reply-form mt-4 relative">
+          <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+            <button type="button" (click)="toggleEmojiPicker('reply', comment)" class="text-xl bg-transparent border-none cursor-pointer">
+              😊
+            </button>
+            <div class="emoji-picker" *ngIf="showEmojiPicker['reply' + comment.commentId]">
+              <span *ngFor="let emoji of emojis" (click)="addEmoji(emoji, 'reply', reply)" class="cursor-pointer">{{ emoji }}</span>
+            </div>
+          </div>
+          <textarea [(ngModel)]="reply.content" placeholder="Add a reply..." rows="2" class="w-full p-2 border border-muted rounded mb-2 pl-12"></textarea>
+          <button (click)="addReply(comment)" class="bg-pastel-rose text-white px-4 py-2 hover-rose rounded">Reply</button>
+          <button (click)="cancelReply(comment)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-gray-600 hover:text-white">Cancel</button>            
+        </div>
+  
+        <!-- Replies -->
+        <div *ngIf="comment.showReplies" class="replies mt-4">
+          <div *ngFor="let reply of comment.replies" class="reply border-l border-muted pl-4 ml-4">
+            <div class="flex items-center mb-2">
+              <img [src]="'http://localhost:8082/images/'+reply.author.image" alt="Replier" class="w-8 h-8 rounded-full border mr-2" />
+              <a [routerLink]="['/users', reply.author.userId]" class="font-semibold">
+                {{ reply.author.username }}
+              </a>
+              <span class="text-sm text-muted-foreground ml-2">{{ reply.createdAt | date:'MMMM d, yyyy' }}</span>
+              <div class="ml-auto flex gap-2">
+                <button (click)="modifyComment(reply)" class="text-blue-500 hover:underline">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button (click)="deleteComment(reply.commentId)" *ngIf="isAdmin || reply.author.username === username" class="text-red-500 hover:underline">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="reply.isEditing; else viewMode" class="relative">
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <button type="button" (click)="toggleEmojiPicker('reply', reply)" class="text-xl bg-transparent border-none cursor-pointer">
+                  😊
+                </button>
+                <div class="emoji-picker" *ngIf="showEmojiPicker['reply' + reply.commentId]">
+                  <span *ngFor="let emoji of emojis" (click)="addEmoji(emoji, 'reply', reply)" class="cursor-pointer">{{ emoji }}</span>
+                </div>
+              </div>
+              <textarea [(ngModel)]="editedComment.content" rows="3" class="w-full p-2 border border-muted rounded mb-2 pl-12"></textarea>
+              <button (click)="saveComment(reply)" class="bg-pastel-rose text-white px-4 py-2 hover-rose rounded">Save</button>
+              <button (click)="cancelEdit(reply)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-gray-600 hover:text-white">Cancel</button>            
             </div>
             <!-- View Mode -->
             <ng-template #viewMode>
-                <p>{{comment.content}}</p>
+              <p>{{reply.content}}</p>
             </ng-template>
-
-            <!-- Reply Button -->
-            <div class="mt-4">
-                <button (click)="toggleReplies(comment)" class="text-blue-500 hover:underline mt-2">
-                    {{ comment.showReplies ? 'Hide Replies' : 'Show Replies' }}
-                </button>
-                <button (click)="toggleReplyForm(comment)" class="text-blue-500 hover:underline ml-4">
-                    Reply
-                </button>
-            </div>
-
-            <!-- Reply Form -->
-            <div *ngIf="comment.addReply" class="reply-form mt-4">
-                <textarea [(ngModel)]="reply.content" placeholder="Add a reply..." rows="2" class="w-full p-2 border border-muted rounded mb-2"></textarea>
-                <button (click)="addReply(comment)" class="bg-pastel-rose text-white px-4 py-2 hover-rose rounded">Reply</button>
-                <button (click)="cancelReply(comment)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-gray-600 hover:text-white">Cancel</button>            
-            </div>
-
-            <!-- Replies -->
-            <div *ngIf="comment.showReplies" class="replies mt-4">
-                <div *ngFor="let reply of comment.replies" class="reply border-l border-muted pl-4 ml-4">
-                    <div class="flex items-center mb-2">
-                        <img [src]="'http://localhost:8082/images/'+reply.author.image" alt="Replier" class="w-8 h-8 rounded-full border mr-2" />
-                        <a [routerLink]="['/users', reply.author.userId]" class="font-semibold">
-                            {{ reply.author.username }}
-                        </a>
-                        <span class="text-sm text-muted-foreground ml-2">{{ reply.createdAt | date:'MMMM d, yyyy' }}</span>
-                        <div class="ml-auto flex gap-2">
-                            <button (click)="modifyComment(reply)" class="text-blue-500 hover:underline">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button (click)="deleteComment(reply.commentId)" *ngIf="isAdmin || reply.author.username === username" class="text-red-500 hover:underline">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div *ngIf="reply.isEditing; else viewMode">
-                        <textarea [(ngModel)]="editedComment.content" rows="3" class="w-full p-2 border border-muted rounded mb-2"></textarea>
-                        <button (click)="saveComment(reply)" class="bg-pastel-rose text-white px-4 py-2 hover-rose rounded">Save</button>
-                        <button (click)="cancelEdit(reply)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-gray-600 hover:text-white">Cancel</button>            
-                    </div>
-                    <!-- View Mode -->
-                    <ng-template #viewMode>
-                        <p>{{reply.content}}</p>
-                    </ng-template>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="comment-form">
-        <textarea [(ngModel)]="comment.content" placeholder="Add a comment..." rows="4" class="w-full p-2 border border-muted rounded mb-2"></textarea>
-        <button (click)="addComment()" type="submit" class="bg-pastel-rose text-white py-2 px-4 rounded-lg hover-rose focus:outline-none focus:ring-2 focus:ring-pastel-rose focus:ring-opacity-50">Post Comment</button>
+    <div class="comment-form relative">
+      <!-- Emoji Picker and Button -->
+      <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+        <button type="button" (click)="toggleEmojiPicker('main')" class="text-xl bg-transparent border-none cursor-pointer">
+          😊
+        </button>
+        <div class="emoji-picker" *ngIf="showEmojiPicker['main']">
+          <span *ngFor="let emoji of emojis" (click)="addEmoji(emoji, 'main')" class="cursor-pointer">{{ emoji }}</span>
+        </div>
+      </div>
+  
+      <textarea [(ngModel)]="comment.content" placeholder="Add a comment..." rows="4" class="w-full p-2 border border-muted rounded mb-2 pl-12"></textarea>
+  
+      <button (click)="addComment()" type="submit" class="bg-pastel-rose text-white py-2 px-4 rounded-lg hover-rose focus:outline-none focus:ring-2 focus:ring-pastel-rose focus:ring-opacity-50">
+        Post Comment
+      </button>
     </div>
-</section>
+  </section>
+  

@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UpdateUserComponent } from '../update-user/update-user.component';
 import { ConfirmationDialogComponent } from '../../confirmation-dialog/confirmation-dialog.component';
 import { AdminService } from '../../service/admin.service';
-import { MatSnackBar } from '@angular/material/snack-bar'; // Import MatSnackBarModule
+import { MatSnackBar } from '@angular/material/snack-bar'; 
 
 
 @Component({

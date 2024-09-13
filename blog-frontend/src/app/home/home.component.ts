@@ -24,8 +24,8 @@ export class HomeComponent implements OnInit {
       },
       error => {console.error('error fetching categories',error);}
     );
-    this.postService.getPosts().subscribe(
-      response => {this.latestPosts = response.slice(0,3).map(
+    this.postService.getLatestPosts().subscribe(
+      response => {this.latestPosts = response.map(
         ((post:any) => ({
           ...post,
           createdAt : new Date(

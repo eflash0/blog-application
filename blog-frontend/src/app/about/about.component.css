@@ -1,0 +1,44 @@
+/* Ensure the container takes full height */
+html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #F0F9FC;
+  }
+
+  /* about.component.css */
+.about-container p {
+    font-size: 1.2rem; /* Adjust size as needed */
+    color: #666; /* Customize color */
+    line-height: 1.6; /* Increase line height for readability */
+    margin-bottom: 15px; /* Space between paragraphs */
+    text-align: justify; /* Justify text alignment */
+    font-family: 'Georgia', serif; /* Customize font family */
+  }
+
+  /* about.component.css */
+.about-container h1 {
+    font-size: 2.5rem; /* Adjust size as needed */
+    color: #333; /* Customize color */
+    text-align: center; /* Center align the title */
+    margin-bottom: 20px; /* Space below the title */
+    font-family: 'Arial', sans-serif; /* Customize font family */
+  }
+  
+  
+  .about-container {
+    flex: 1;
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+  
+  app-footer {
+    margin-top: auto; 
+  }
+  

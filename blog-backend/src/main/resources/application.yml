@@ -21,6 +21,17 @@ spring:
                 - classpath:/static/
     mvc:
         static-path-pattern: /**
+    mail:
+        host: smtp.gmail.com
+        port: 587
+        username: admin-email@example.com
+        password: admin-email-password
+        properties:
+            mail:
+                smtp:
+                auth: true
+                starttls:
+                    enable: true    
 
 file:
   upload-dir: C:\Users\admin\Desktop\New folder\spring\blog\blog-backend\src\main\resources\static\uploads
