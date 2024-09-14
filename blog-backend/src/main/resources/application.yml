@@ -22,14 +22,14 @@ spring:
     mvc:
         static-path-pattern: /**
     mail:
-        host: smtp.gmail.com
-        port: 587
-        username: admin-email@example.com
-        password: admin-email-password
+        host: localhost
+        port: 1025
+        username: anything
+        password: anything
         properties:
             mail:
                 smtp:
-                auth: true
+                auth: false
                 starttls:
                     enable: true    
 

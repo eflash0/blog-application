@@ -2,6 +2,7 @@ package com.blog.blog.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.blog.blog.entity.Role;
 import com.blog.blog.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -30,8 +32,13 @@ public class WebSecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/auth/**").permitAll()
-                .anyRequest().permitAll()
+                .requestMatchers("/auth/**","/images/**").permitAll()
+                .requestMatchers("/admins/**").hasAuthority(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+                .requestMatchers(HttpMethod.POST,"/categories/**").hasAuthority(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.PUT,"/categories/**").hasAuthority(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.DELETE,"/categories/**").hasAuthority(Role.ADMIN.name())
+                .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

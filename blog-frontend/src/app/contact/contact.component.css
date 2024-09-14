@@ -14,3 +14,8 @@
     border-color: #428bca;
     box-shadow: 0 0 0 3px rgba(66, 139, 202, 0.4);
 }
+
+.success-snackbar {
+    background-color: green;
+    color: white;
+  }

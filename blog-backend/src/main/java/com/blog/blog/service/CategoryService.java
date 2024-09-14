@@ -39,12 +39,13 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public Category updateCategory(Category category,Long id){
+    public CategoryDto updateCategory(Category category,Long id){
         Category existingCategory = categoryRepository.findById(id).orElseThrow(() ->
         new IllegalArgumentException("category not found"));
         if(category.getName() != null && !category.getName().isEmpty())
             existingCategory.setName(category.getName());
-        return categoryRepository.save(existingCategory);
+        Category savedCategory = categoryRepository.save(existingCategory);
+        return modelMapper.map(savedCategory,CategoryDto.class);
     }
 
     public void deleteCategoryById(Long id){
