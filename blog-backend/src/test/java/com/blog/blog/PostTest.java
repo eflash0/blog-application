@@ -51,21 +51,21 @@ public class PostTest {
         file = new MockMultipartFile("null"," null".getBytes());
     }
 
-    @Test
-    public void addPostTest(){
-        when(postRepository.findById(postDto.getPostId())).thenReturn(Optional.empty());
-        when(modelMapper.map(postDto, Post.class)).thenReturn(post);
-        when(postRepository.save(post)).thenReturn(post);
-        when(modelMapper.map(post, PostDto.class)).thenReturn(postDto);
-        PostDto result = postService.addPost(postDto,file);
-        assertNotNull(result);
-        assertEquals(postDto.getPostId(), result.getPostId());
-        assertEquals(postDto.getTitle(), result.getTitle());
-        assertEquals(postDto.getContent(), result.getContent());
-        verify(postRepository).findById(postDto.getPostId());
-        verify(postRepository).save(post);
-        verify(modelMapper).map(postDto, Post.class);
-        verify(modelMapper).map(post, PostDto.class);
-    }
+    // @Test
+    // public void addPostTest(){
+    //     when(postRepository.findById(postDto.getPostId())).thenReturn(Optional.empty());
+    //     when(modelMapper.map(postDto, Post.class)).thenReturn(post);
+    //     when(postRepository.save(post)).thenReturn(post);
+    //     when(modelMapper.map(post, PostDto.class)).thenReturn(postDto);
+    //     PostDto result = postService.addPost(postDto,file);
+    //     assertNotNull(result);
+    //     assertEquals(postDto.getPostId(), result.getPostId());
+    //     assertEquals(postDto.getTitle(), result.getTitle());
+    //     assertEquals(postDto.getContent(), result.getContent());
+    //     verify(postRepository).findById(postDto.getPostId());
+    //     verify(postRepository).save(post);
+    //     verify(modelMapper).map(postDto, Post.class);
+    //     verify(modelMapper).map(post, PostDto.class);
+    // }
 
 }

@@ -1,45 +1,50 @@
 spring:
-    application:
-        name: blog
-    datasource:
-        url: jdbc:postgresql://localhost:5432/blog
-        username: postgres
-        password: 123 
-        driver-class-name: org.postgresql.Driver  
-    jpa:
-        hibernate: 
-            ddl-auto: update
-            dialect: org.hibernate.dialect.PostgreSQLDialect
-        show-sql: true
-        properties: 
-            hibernate:          
-                format_sql: true
+  application:
+    name: blog
+  datasource:
+    url: jdbc:postgresql://database:5432/blog
+    username: postgres
+    password: 123 
+    driver-class-name: org.postgresql.Driver  
+  jpa:
+    hibernate: 
+      ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties: 
+      hibernate:          
+        format_sql: true
+  web:
+    resources:
+      static-locations:
+        - classpath:/static/
+  mvc:
+    static-path-pattern: /**
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: edwardarahi2002@gmail.com
+    password: lwle sheo dliw ftna 
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
-    web:
-        resources:
-            static-locations:
-                - classpath:/static/
-    mvc:
-        static-path-pattern: /**
-    mail:
-        host: localhost
-        port: 1025
-        username: anything
-        password: anything
-        properties:
-            mail:
-                smtp:
-                auth: false
-                starttls:
-                    enable: true    
+  logging:
+    level:
+      org.springframework.mail: DEBUG 
 
 file:
-  upload-dir: C:\Users\admin\Desktop\New folder\spring\blog\blog-backend\src\main\resources\static\uploads
-    
+  upload-dir: ${FILE_UPLOAD_DIR:/app/uploads}
+
 server:
-    port: 8082
-    error:
-        include-message: always
+  port: 8082
+  error:
+    include-message: always 
+
 jwt:
-    secret: 2+LaR6mKTpaFTMK4NKlHUQ5JgMtQFK0zGGSE/OUgJR8oU7Vhihb0gA8RofYlZZ/30kN+My5iIvuvYPDDMld5hg==
-    expiration: 36000
+  secret: 2+LaR6mKTpaFTMK4NKlHUQ5JgMtQFK0zGGSE/OUgJR8oU7Vhihb0gA8RofYlZZ/30kN+My5iIvuvYPDDMld5hg==
+  expiration: 36000  

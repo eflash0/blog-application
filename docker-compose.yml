@@ -1,0 +1,51 @@
+services:
+  backend:
+    build: 
+      context: ./blog-backend
+      dockerfile: Dockerfile.backend      
+    ports:
+      - "8082:8082"  
+    networks:
+      - app-network 
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/blog
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update 
+      - FILE_UPLOAD_DIR=/app/uploads
+    volumes:
+      - ./uploads:/app/uploads  
+    depends_on:
+      - database
+
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: blog
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  frontend:
+    build: 
+      context: ./blog-frontend
+      dockerfile: Dockerfile.frontend
+    ports:
+      - "4200:4200"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  uploads:
