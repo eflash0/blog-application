@@ -13,13 +13,13 @@ export class AdminService {
   getUsers() : Observable<any>{
     const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
     const users = `${this.url}/getUsers`;
-    return this.http.get<any>(users);
+    return this.http.get<any>(users , { headers });
   }
 
   getAmins() : Observable<any>{
     const headers = new HttpHeaders().set('Authorization',`Bearer ${localStorage.getItem('token')}`);
     const admins = `${this.url}/getAdmins`;
-    return this.http.get<any>(admins);
+    return this.http.get<any>(admins,{ headers });
   }
 
   addAdmin(admin : any) : Observable<any>{
