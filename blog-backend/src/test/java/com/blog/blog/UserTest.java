@@ -22,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.blog.blog.dto.SignupRequest;
 import com.blog.blog.dto.UserDto;
+import com.blog.blog.dto.UserResponse;
 import com.blog.blog.entity.Role;
 import com.blog.blog.entity.User;
 import com.blog.blog.repository.UserRepository;
@@ -84,11 +85,10 @@ public class UserTest {
                 return mappedDto;
             }
         );
-        UserDto rslt = adminService.addAdmin(userDto);
+        UserResponse rslt = adminService.addAdmin(userDto);
         assertNotNull(rslt);
         assertEquals(rslt.getUsername(),userDto.getUsername());
         assertEquals(rslt.getEmail(),userDto.getEmail());
-        assertEquals("ADMIN",rslt.getRole().name());
     }
 
     @Test

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.blog.blog.dto.UserDto;
+import com.blog.blog.dto.UserResponse;
 import com.blog.blog.entity.Role;
 import com.blog.blog.entity.User;
 import com.blog.blog.repository.UserRepository;
@@ -24,7 +25,7 @@ public class AdminService {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserDto addAdmin(UserDto userDto){
+    public UserResponse addAdmin(UserDto userDto){
         Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
         if(existingUser.isPresent()){
             throw new IllegalArgumentException("the username already exists");
@@ -37,10 +38,10 @@ public class AdminService {
         user.setRole(Role.ADMIN);
         user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         User savedUser = userRepository.save(user);
-        return modelMapper.map(savedUser,UserDto.class);
+        return modelMapper.map(savedUser,UserResponse.class);
     }
 
-    public UserDto addUser(UserDto userDto){
+    public UserResponse addUser(UserDto userDto){
         Optional<User> existingUser = userRepository.findByUsername(userDto.getUsername());
         if(existingUser.isPresent()){
             throw new IllegalArgumentException("the username already exists");
@@ -53,21 +54,21 @@ public class AdminService {
         user.setRole(Role.USER);
         user.setPassword(bCryptPasswordEncoder.encode(userDto.getPassword()));
         User savedUser = userRepository.save(user);
-        return modelMapper.map(savedUser,UserDto.class);
+        return modelMapper.map(savedUser,UserResponse.class);
     }
 
-    public List<UserDto> getAdmins(){
+    public List<UserResponse> getAdmins(){
         List<User> admins = userRepository.getUsersByRole(Role.ADMIN);
         return admins.stream().map(admin -> modelMapper
-        .map(admin,UserDto.class)).toList();
+        .map(admin,UserResponse.class)).toList();
     }
 
-    public List<UserDto> getUsers(){
+    public List<UserResponse> getUsers(){
         List<User> users = userRepository.getUsersByRole(Role.USER);
-        return users.stream().map(user -> modelMapper.map(user,UserDto.class)).toList();
+        return users.stream().map(user -> modelMapper.map(user,UserResponse.class)).toList();
     }
 
-    public UserDto updateUser(UserDto userDto,Long id){
+    public UserResponse updateUser(UserDto userDto,Long id){
         User existingUser = userRepository.findById(id).orElseThrow(() ->
         new IllegalArgumentException("user not found"));
         if (userDto.getUsername() != null && !userDto.getUsername().isEmpty()) {
@@ -88,7 +89,7 @@ public class AdminService {
             }
         }
         userRepository.save(existingUser);
-        return modelMapper.map(existingUser,UserDto.class);
+        return modelMapper.map(existingUser,UserResponse.class);
     }
 
     public void deleteUser(Long id){

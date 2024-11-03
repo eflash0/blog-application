@@ -88,7 +88,6 @@ export class GetPostsComponent implements OnInit {
 
   onSearch(searchTerm: string): void {
     console.log(searchTerm);
-    
     const lowerSearchTerm = searchTerm.toLowerCase();
     this.filteredPosts = this.posts.filter(post =>
       post.title.toLowerCase().includes(lowerSearchTerm) ||
